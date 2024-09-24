@@ -163,24 +163,3 @@ console.log(string6[indexOfX]);
 
 console.log("hhh".indexOf("h"));
 console.log("hhh".lastIndexOf("h"));
-
-function a() {
-  // Завдання:
-  // 1.
-  const str1 = "Hello";
-  const str2 = "World";
-
-  // const str3 = ...
-
-  //   Використовуючи replaceAll
-  //   замінити всі str1 у тексті на str2
-
-  const text = "Hello, my name is Igor. Hello, hello, hello";
-
-  //   2.
-  const name = "Igor";
-  const age = 25;
-  const skills = "JS, HTML, CSS";
-
-  // Вивести name, age, skills за допомогою інтерполяції у речення (``)
-}
