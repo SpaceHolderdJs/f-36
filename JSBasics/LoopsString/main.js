@@ -101,8 +101,100 @@ for (const letter of str11) {
 
 console.log(result);
 
-const str12 = "hheelloo";
+function a() {
+  const str12 = "hheelllloo";
 
-// (for of)
+  let result = "";
+  let currentLetter = "";
 
-// => hello;
+  for (const letter of str12) {
+    const wasLetterBefore = currentLetter.includes(letter);
+
+    if (wasLetterBefore) {
+      result = result.concat(letter);
+    }
+
+    currentLetter = letter;
+  }
+
+  console.log(result, str12);
+}
+
+a();
+
+function b() {
+  const str = "hheelllloo";
+
+  let result = ""; // cюди складайте результат (по одній літері)
+  let dublicateLetter = ""; // це та літера, що зараз повторюється (h, e, l, o)
+
+  for (const letter of str) {
+    // Якщо літера відрізняється від останньої доданої в результат,
+    // то додаємо її до результату
+    if (letter !== dublicateLetter) {
+      result += letter; // Додаємо літера до результату
+    }
+
+    // Встановлюємо дублікат письмової літери на поточну
+    dublicateLetter = letter;
+  }
+
+  console.log(result, "result from AI"); // Виведе "hello"
+}
+
+b();
+
+const str13 = "String";
+
+console.log(str13.length);
+
+for (let i = 0; i < 10; i = i + 1) {
+  console.log(i, "index");
+}
+
+console.log(str13.length);
+
+for (const letter of str13) {
+  console.log(letter);
+}
+
+for (let i = 0; i < str13.length; i = i + 1) {
+  console.log(str13[i]);
+}
+
+const str14 = "hheelllloo";
+let result1 = "";
+
+for (let i = 0; i < str14.length; i = i + 2) {
+  result1 = result1 + str14[i];
+}
+
+console.log(result1, "result");
+
+// Завдання:
+
+const str15 = "Kotlinnnnnnnnnnn";
+let counter1 = 0;
+
+// використати цикл for з лічильником щоб порахувати кількість літер n
+
+for (let i = 0; i < str15.length; i = i + 1) {
+  const isNLetter = "n".includes(str15[i]);
+
+  if (isNLetter) {
+    counter1 = counter1 + 1;
+  }
+}
+
+console.log(counter1);
+
+const str16 = "Kotlin";
+let result2 = 0;
+
+for (let i = 0; i < str16.length; i = i + 1) {
+  if ("n".includes(str16[i])) {
+    console.log(str16[i]);
+    result2 = result2 + 1;
+  }
+}
+console.log(result2, "result");
