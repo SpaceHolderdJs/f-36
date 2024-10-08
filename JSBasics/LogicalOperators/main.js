@@ -225,21 +225,3 @@ switch (role) {
     break;
   }
 }
-
-//  Завдання:
-let count = 5;
-let iterations = 7;
-
-// написати цикл, який має збільшити count на 1 iterations разів
-// for(let i = 0; i < iterations; i = i + 2)
-// якщо count після змін більший за 10 - вивести "too much" - якщо ні - вивести "not enough"
-// ternar ? :
-
-// Завдання
-
-const name = "Igor";
-
-// Написати switch під 3 імені (Alina, Egor, Max)
-// Виводьте name в кожному кейсі
-
-const specialSymbols = "!@#$%^&*_?";
