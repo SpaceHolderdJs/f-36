@@ -150,13 +150,6 @@ function elevator2() {
 
 elevator2();
 
-let distance = 0;
-let fluel = 60;
-
-const maxFluel = 70;
-
-const command = "";
-
 // Завдання:
 // Написати логіку руху автомобіля
 
@@ -165,3 +158,45 @@ const command = "";
 // Якщо бензину нема - ви не їдете
 
 // Використати підхід elevator за основу
+
+function car() {
+  let distance = 0;
+  let fluel = 60;
+
+  const maxFluel = 70;
+
+  const command = "addFluel:5";
+
+  if (command === "forward") {
+    if (fluel >= 10) {
+      distance = distance + 100;
+      fluel = fluel - 10;
+    } else {
+      console.log("Fluel is empty");
+    }
+  } else if (command === "backwards") {
+    if (fluel >= 10) {
+      distance = distance - 100;
+      fluel = fluel - 10;
+    } else {
+      console.log("Fluel is empty");
+    }
+  } else if (command === "stop") {
+    console.log("Car was stopped");
+  } else if (command.startsWith("addFluel")) {
+    const indexOfTwoDots = command.indexOf(":") + 1;
+    const fluelToAddAmount = +command.slice(indexOfTwoDots);
+
+    if (fluel + fluelToAddAmount <= maxFluel) {
+      fluel = fluel + fluelToAddAmount;
+    } else {
+      console.log("This fluel amount will not fit");
+    }
+  } else {
+    console.log("Command is not valid");
+  }
+
+  console.log(`Distance: ${distance}, fluel: ${fluel}`);
+}
+
+car();
