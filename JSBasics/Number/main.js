@@ -183,7 +183,15 @@ console.log(Math.random());
 // Написати логіку, яка буде взводити число l у степінь m
 
 let l = 10;
-let m = 2;
+let m = 5;
+
+let result = 10;
+
+for (let i = 0; i < m - 1; i++) {
+  result = result * l;
+}
+
+console.log(result, "result");
 
 // використайте цикл (for (i))
 
@@ -195,3 +203,89 @@ let num = 9;
 // Math.random();
 
 // вивести число, якщо його вгадав JavaScript
+
+const powed = Math.pow(l, m);
+console.log(powed, "power");
+
+console.log(Math.pow(3, NaN));
+
+console.log(10 + Math.pow(2, 4));
+
+console.log(Math.max(8, 3, 5, 10, 9, 2), "max");
+console.log(Math.max(80, 4, 2, 2, 1, 1));
+
+console.log(Math.min(90, 202, 1), "min");
+
+const date1 = "02.06.2021";
+const date2 = "08.07.2021";
+const date3 = "07.02.1999";
+const date4 = "06.12.1991";
+const date5 = "09.11.1999";
+
+const allDates = `${date1}:${date2}:${date3}:${date4}:${date5}`;
+("07.02.1999:08.07.2000:02.06.2001");
+
+// Завдання
+// Знайти найстаршу та наймолодшу дату
+
+let maxDate = "";
+let minDate = date1;
+
+let maxYear = 0;
+let minYear = Infinity;
+
+let maxMonth = 0;
+let minMonth = Infinity;
+
+let maxDay = 0;
+let minDay = Infinity;
+
+// Calculation of all the dates
+let datesQuantity = 1;
+
+for (const symbol of allDates) {
+  if (symbol === ":") {
+    datesQuantity++;
+  }
+}
+
+console.log(datesQuantity, "datesQuantity");
+
+const step = date1.length;
+
+// Iteration for each date and analytics of values
+for (let i = 0; i < datesQuantity; i++) {
+  const currentPosition = i * step + i;
+  const currentDate = allDates.slice(currentPosition, currentPosition + step);
+
+  const date = +currentDate.slice(0, 2);
+  const month = +currentDate.slice(3, 5);
+  const year = +currentDate.slice(-4);
+
+  if (maxYear < year) {
+    console.log("year", year);
+    maxYear = year;
+  }
+
+  if (maxMonth < month) {
+    // if years are same
+    console.log("month", month);
+    maxMonth = month;
+  }
+
+  if (maxDay < date) {
+    // if months are same
+    console.log("day", date);
+    maxDay = date;
+  }
+}
+
+console.log(maxYear, "maxYear");
+console.log(maxMonth, "maxMonth");
+console.log(maxDay, "maxDate");
+
+if (currentDate.includes(maxYear)) maxDate = currentDate;
+if (currentDate.includes(maxMonth)) maxDate = currentDate;
+if (currentDate.includes(maxDay)) maxDate = currentDate;
+
+console.log(maxDate);
