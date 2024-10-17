@@ -217,12 +217,13 @@ console.log(Math.max(80, 4, 2, 2, 1, 1));
 console.log(Math.min(90, 202, 1), "min");
 
 const date1 = "02.06.2021";
-const date2 = "08.07.2021";
+const date2 = "01.12.2099";
 const date3 = "07.02.1999";
 const date4 = "06.12.1991";
 const date5 = "09.11.1999";
+const date6 = "09.11.2050";
 
-const allDates = `${date1}:${date2}:${date3}:${date4}:${date5}`;
+const allDates = `${date1}:${date2}:${date3}:${date4}:${date5}:${date6}`;
 ("07.02.1999:08.07.2000:02.06.2001");
 
 // Завдання
@@ -265,27 +266,22 @@ for (let i = 0; i < datesQuantity; i++) {
   if (maxYear < year) {
     console.log("year", year);
     maxYear = year;
-  }
-
-  if (maxMonth < month) {
+    maxDate = currentDate;
+  } else if (maxMonth < month && maxYear <= year) {
     // if years are same
     console.log("month", month);
     maxMonth = month;
-  }
-
-  if (maxDay < date) {
+    maxDate = currentDate;
+  } else if (maxDay < date && maxMonth <= month && maxYear <= year) {
     // if months are same
     console.log("day", date);
     maxDay = date;
+    maxDate = currentDate;
   }
 }
 
 console.log(maxYear, "maxYear");
 console.log(maxMonth, "maxMonth");
 console.log(maxDay, "maxDate");
-
-if (currentDate.includes(maxYear)) maxDate = currentDate;
-if (currentDate.includes(maxMonth)) maxDate = currentDate;
-if (currentDate.includes(maxDay)) maxDate = currentDate;
 
 console.log(maxDate);
