@@ -280,6 +280,27 @@ const values = {
 // записати у source всі values, врахувати налаштування
 // for (in) -> Object.defineProperty(...)
 
+for (const key in values) {
+  const settings = values[key];
+
+  Object.defineProperty(source, key, {
+    value: values[key].v,
+    writable: values[key].w,
+    enumerable: values[key].e,
+    configurable: values[key].c,
+  });
+}
+
+console.log(source, "source");
+
+// Checking
+
+for (const key in source) {
+  console.log(key, "key");
+  console.log(source[key], "value");
+  console.log(source.propertyIsEnumerable(key));
+}
+
 // Object.defineProperty(obj, key, settings)
 
 // Перевірити результати запису
