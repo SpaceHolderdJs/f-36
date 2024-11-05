@@ -232,3 +232,34 @@ const details = {
 // for - in
 
 // 4. Вивести дані про власника за допомогою Destructure {}
+
+// 1
+for (const autoKey in auto) {
+  details[autoKey] = auto[autoKey];
+}
+
+console.log(details, "#1 details");
+console.log(auto);
+
+// 2
+// Object.freeze(details);
+
+console.log(Object.isFrozen(details));
+
+// 3
+const color = details.color;
+
+for (const key in details) {
+  if (key === "owner" || key === "color") {
+    Object.defineProperty(details, key, {
+      value: details[key],
+      enumerable: false,
+    });
+
+    console.log(details.propertyIsEnumerable(key));
+  }
+}
+
+// 4
+const { owner } = details;
+console.log(`Owner is ${owner}`);
