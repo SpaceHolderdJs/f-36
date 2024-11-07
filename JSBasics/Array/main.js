@@ -71,3 +71,9 @@ console.log([1, 2, 3, 4].includes(100), "includes");
 const points = [20, 1, 5, 7, 9];
 // Якщо у масиві точок є точка 7 - відрізати цю точку за її індексом (indexOf)
 // slice => [7]
+
+if (points.includes(7)) {
+  const indexOfPoint = points.indexOf(7);
+  const sliced7 = points.slice(indexOfPoint, indexOfPoint + 1);
+  console.log(sliced7, "sliced7");
+}
