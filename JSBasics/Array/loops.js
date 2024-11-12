@@ -170,9 +170,36 @@ const hwArray = [[1, 2, 3], [5], [7, 7, 3], [9, 2], [90]];
 // Порахувати суму елементів масиву
 // Знайти мінімалньний та максимальний елемент
 
+const flattedArray = hwArray.flat(1);
+
+let min = flattedArray[0];
+let max = flattedArray[0];
+let hwSum = 0;
+
+flattedArray.forEach((number) => {
+  hwSum += number;
+
+  if (number < min) {
+    min = number;
+  }
+
+  if (number > max) {
+    max = number;
+  }
+});
+
+console.log(`Sum: ${hwSum}`, `Min: ${min}`, `Max: ${max}`);
+
 // Завдання
 
 const hwUsers = [{ email: "email1@gmail.com" }, { email: "email2@gmail.com" }];
+
+const [{ email: email1 }, { email: email2 }] = hwUsers;
+
+// const { email: user1Email } = user1;
+// const { email: user2Email } = user2;
+
+console.log(email1, email2);
 
 // деструктуризувати поля email для user1 та user2
 
