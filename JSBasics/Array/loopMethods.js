@@ -186,6 +186,66 @@ const result = [];
 
 // for of
 
+for (const num of data) {
+  if (num < 5) {
+    result.push(num);
+  }
+}
+
+console.log(result, "result");
+
+[].forEach((el, i, arr) => {});
+
+Array.prototype.myForEach = function (callback) {
+  //   const result = [];
+
+  console.log(callback);
+
+  for (let i = 0; i < this.length; i++) {
+    callback(this[i], i, this);
+  }
+};
+
+[1, 2, 3, 4, 5].myForEach((el, i, arr) => console.log(el, i, arr, "myForaech"));
+
+[1, 2, 3, 4].map((e) => {
+  return e + 10;
+});
+
+Array.prototype.myMap = function (callback) {
+  const result = [];
+
+  for (let i = 0; i < this.length; i++) {
+    const transformedElement = callback(this[i], i, this);
+
+    result.push(transformedElement);
+  }
+
+  return result;
+};
+
+console.log(
+  [1, 2, 3, 4].myMap((e) => {
+    return e * 10;
+  })
+);
+
+Array.prototype.myFilter = function (callback) {
+  const result = [];
+
+  for (let i = 0; i < this.length; i++) {
+    const elementValidationResult = callback(this[i], i, this);
+
+    if (Boolean(elementValidationResult)) {
+      result.push(this[i]);
+    }
+  }
+
+  return result;
+};
+
+console.log([1, 2, 3, 4, 5, 6, 7, 8].myFilter((e) => e > 3 && e < 7));
+
 // Завдання*
 
 const numbersArr = [1, 2, 4, 3, 6, 9, 10, 1, 4, 0];
@@ -197,3 +257,207 @@ function sumOf(arr, k) {}
 // sumOf(numbersArr, 100) => null
 
 // O(n + k) - лінійна складність
+
+// forEach, map, filter, find, findIndex
+
+// sort, reduce
+
+// some, every
+
+const numbers2 = [1, 2, "3", 4, 5];
+
+console.log(
+  numbers2.some((n) => typeof n === "object"),
+  "some"
+);
+
+const invoices = [
+  { id: 1, amount: 2000 },
+  { id: 2, amount: 2000 },
+  { id: 3, amount: 2000 },
+  //   { id: 4, amount: undefined },
+];
+
+// Завдання:
+// Перевірити наявність елементу з amount: undefined
+// (some)
+
+console.log(
+  invoices.some((invoice) => !invoice.amount),
+  "some"
+);
+
+// every
+
+console.log(
+  invoices.every((invoice) => invoice.amount),
+  "every"
+);
+
+Array.prototype.myEvery = function (callback) {
+  let result = true;
+
+  for (let i = 0; i < this.length; i++) {
+    const elementCheckResult = callback(this[i], i, this);
+
+    if (!elementCheckResult) {
+      return false;
+    }
+  }
+
+  return result;
+};
+
+console.log([1, 2, 3, 5, 8].myEvery((e) => e < 10));
+
+// reduce
+
+const numbs = [10, 20, 30, 40, 50];
+
+const sum = numbs.reduce((acc, el, i, arr) => {
+  acc = acc + el;
+  return acc;
+}, 0);
+
+// [].reduce((sum, el) => (sum += el), 0);
+
+console.log(sum, "sum");
+
+const names2 = ["Igor", "Oleg", "Alina"];
+
+const namesAsAnObj = names2.reduce((acc, name) => {
+  acc[name] = name;
+  return acc;
+}, {});
+
+console.log(namesAsAnObj);
+
+const emails2 = ["email1@gmail.com", "email2@gmail.com", "email3@gmail.com"];
+
+const emailsWithout2 = emails2.reduce((acc, email) => {
+  if (!email.includes("2")) {
+    acc.push(email);
+  }
+
+  return acc;
+}, []);
+
+console.log(emailsWithout2);
+
+console.log(emails2.filter((email) => !email.includes("2")));
+
+const data2 = [
+  { x: 10, y: 20 },
+  { x: 1, y: 10 },
+  { x: 4, y: 2 },
+  { x: 0, y: 2 },
+];
+
+// {x: 15 , y: 34}
+
+const totalPoint = data2.reduce(
+  (acc, point) => {
+    const { x, y } = point;
+
+    acc.x = acc.x + x;
+    acc.y = acc.y + y;
+
+    return acc;
+  },
+  { x: 0, y: 0 }
+);
+
+console.log(totalPoint, "totalPoint");
+
+// Завдання
+
+const sentence = "I love programming. I know JS, HTML, CSS";
+
+const countedLettersMap = [...sentence]
+  .map((e) => e.toLowerCase())
+  .reduce((acc, e) => {
+    acc[e] = acc[e] ? acc[e] + 1 : 1;
+    return acc;
+  }, {});
+
+console.log(countedLettersMap, "countedLettersMap");
+
+// Порахувати кількість кожного символу строки
+// reduce()
+
+// {I: 2, i: 1, l: 1, o: 2 ...}
+
+// sort
+
+const nums2 = [1, 9, 5, 2];
+const names4 = ["Igor", "Alina", "Oleg"];
+
+const users4 = [{ id: 4 }, { id: 2 }, { id: 8 }];
+
+const bools = [true, false, true, false];
+
+console.log(nums2.sort());
+console.log(names4.sort());
+console.log(users4.sort());
+console.log(bools.sort());
+
+// 1 - 10
+console.log(nums2.sort((e1, e2) => e1 - e2));
+// 10 - 1
+console.log(nums2.sort((n1, n2) => n2 - n1));
+
+console.log(users4.sort((user1, user2) => user2.id - user1.id));
+
+console.log(nums2.sort((e1, e2) => e1 - e2));
+
+// locale compare
+
+console.log(names4.sort((n1, n2) => n1.localeCompare(n2)));
+
+console.log("z".localeCompare("z"));
+
+// Mutable
+
+const usersSubs = [{ paid: true }, { paid: false }, { paid: true }];
+
+console.log(usersSubs, "userssubs before");
+
+console.log([...usersSubs].sort((u1, u2) => (u1.paid ? -1 : 1)));
+
+console.log(usersSubs, "userssubs after");
+
+// Завдання:
+
+const array = ["H", "e", "l", "l", "o"];
+
+// звести масив array до строки, використовуючи reduce
+// всі літери - маленькі
+
+const cars = [
+  { price: 500, brand: "Ford" },
+  { price: 600, brand: "Toyota" },
+  { price: 100, brand: "Acura" },
+  { price: 900, brand: "Aston Martin" },
+  { price: 600, brand: "Dodge" },
+];
+
+// відсортувати машини за 2 критеріями
+// 1. price - зростання
+// 2. brand - зростання (алфавітне)
+
+// a + b = c
+// a = c - b
+// b = c - a
+
+// k
+const map = {};
+
+// for
+// map[k - e] = e;
+
+// for in (map)
+//
+
+for (let i = 0; i < [].length; i++) {
+  for (let j = 0; j < [].length; j++) {}
+}
