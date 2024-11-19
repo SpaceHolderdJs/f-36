@@ -432,14 +432,32 @@ const array = ["H", "e", "l", "l", "o"];
 
 // звести масив array до строки, використовуючи reduce
 // всі літери - маленькі
+const hw1Res = array
+  .map((letter) => letter.toLowerCase())
+  .reduce((str, letter) => {
+    str = str.concat(letter);
+    return str;
+  }, "");
+
+console.log(hw1Res, "hw 1");
 
 const cars = [
-  { price: 500, brand: "Ford" },
-  { price: 600, brand: "Toyota" },
-  { price: 100, brand: "Acura" },
-  { price: 900, brand: "Aston Martin" },
-  { price: 600, brand: "Dodge" },
+  { price: 500, brand: "Ford", color: "black" },
+  { price: 600, brand: "Toyota", color: "red" },
+  { price: 100, brand: "Acura", color: "grey" },
+  { price: 900, brand: "Aston Martin", color: "orange" },
+  { price: 600, brand: "Dodge", color: "grey" },
 ];
+
+const sortedCars = cars.sort(
+  (c1, c2) => c1.price - c2.price || c1.brand.localeCompare(c2.brand)
+);
+
+console.log(sortedCars, "sortedCars");
+
+// -1
+// +1
+// 0
 
 // відсортувати машини за 2 критеріями
 // 1. price - зростання
@@ -448,16 +466,3 @@ const cars = [
 // a + b = c
 // a = c - b
 // b = c - a
-
-// k
-const map = {};
-
-// for
-// map[k - e] = e;
-
-// for in (map)
-//
-
-for (let i = 0; i < [].length; i++) {
-  for (let j = 0; j < [].length; j++) {}
-}
