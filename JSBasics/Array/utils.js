@@ -237,18 +237,35 @@ const arr1 = ["C", "D", "A", 4, "R", 10, "X", "Z", 8];
 // ["A", "C", "D", "R", "X", "Z"]
 // [4, 8, 10]
 
+const letters = arr1
+  .filter((item) => typeof item === "string")
+  .toSorted((l1, l2) => l1.localeCompare(l2));
+
+const numbers = arr1
+  .filter((item) => typeof item === "number")
+  .toSorted((n1, n2) => n1 - n2);
+
+console.log(letters, numbers);
+
 // 2. Перегорнути кожен з масивів з завдання 1 (immutable)
+
+console.log(letters.toReversed());
+console.log(numbers.toReversed());
 
 // 3. Масив arr1 заповинити елементами, відповідно до їх алфавітних позицій (для number)
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-// ["C", "D", "A", "E", "R", "K", "X", "Z", "I"];
+const filledArray1 = arr1.map((item) => {
+  if (typeof item === "string") {
+    return item;
+  }
 
-const numsWith = nums.flatMap((elem, i, arr) => {
-  return Array.isArray(elem)
-    ? elem.forEach((el, indx) => arr.splice(i + indx, el))
-    : elem;
+  const letterForItem = alphabet[item];
+
+  return letterForItem;
 });
 
-console.log(numsWith);
+console.log(filledArray1, "filledArray");
+
+// ["C", "D", "A", "E", "R", "K", "X", "Z", "I"];
