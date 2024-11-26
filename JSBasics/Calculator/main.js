@@ -39,43 +39,54 @@ calculatorNumbers.appendChild(clearButton);
 
 // Operations
 const actions = {
-  plus: document.getElementById("action-plus"),
-  minus: document.getElementById("action-minus"),
-  multiply: document.getElementById("action-multiply"),
-  divide: document.getElementById("action-divide"),
+  "+": document.getElementById("action-plus"),
+  "-": document.getElementById("action-minus"),
+  "*": document.getElementById("action-multiply"),
+  "/": document.getElementById("action-divide"),
   result: document.getElementById("action-result"),
 };
 
 // HW2 (Автоматизувати схожу логіку масивами та їх методами)
 // ["+", "-", "*", "/"]
 
-actions.plus.onclick = () => {
-  const result = calculate(calculatorInput.value);
-  calculatorOutput.textContent = result;
+for (const action in actions) {
+  if (action !== "result") {
+    actions[action].onclick = () => {
+      const result = calculate(calculatorInput.value);
+      calculatorOutput.textContent = result;
 
-  calculatorInput.value = calculatorInput.value.concat(`+`);
-};
+      calculatorInput.value = calculatorInput.value.concat(action);
+    };
+  }
+}
 
-actions.minus.onclick = () => {
-  const result = calculate(calculatorInput.value);
-  calculatorOutput.textContent = result;
+// actions.plus.onclick = () => {
+//   const result = calculate(calculatorInput.value);
+//   calculatorOutput.textContent = result;
 
-  calculatorInput.value = calculatorInput.value.concat(`-`);
-};
+//   calculatorInput.value = calculatorInput.value.concat(`+`);
+// };
 
-actions.multiply.onclick = () => {
-  const result = calculate(calculatorInput.value);
-  calculatorOutput.textContent = result;
+// actions.minus.onclick = () => {
+//   const result = calculate(calculatorInput.value);
+//   calculatorOutput.textContent = result;
 
-  calculatorInput.value = calculatorInput.value.concat(`*`);
-};
+//   calculatorInput.value = calculatorInput.value.concat(`-`);
+// };
 
-actions.divide.onclick = () => {
-  const result = calculate(calculatorInput.value);
-  calculatorOutput.textContent = result;
+// actions.multiply.onclick = () => {
+//   const result = calculate(calculatorInput.value);
+//   calculatorOutput.textContent = result;
 
-  calculatorInput.value = calculatorInput.value.concat(`/`);
-};
+//   calculatorInput.value = calculatorInput.value.concat(`*`);
+// };
+
+// actions.divide.onclick = () => {
+//   const result = calculate(calculatorInput.value);
+//   calculatorOutput.textContent = result;
+
+//   calculatorInput.value = calculatorInput.value.concat(`/`);
+// };
 
 // HW2
 
