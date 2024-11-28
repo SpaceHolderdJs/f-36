@@ -154,11 +154,22 @@ const student = {
   //   {id: this.marks.length, value: m}
   addMark: function (m) {
     // додати id
-    this.marks.push(m);
+    const mark = {
+      id: this.marks.length + 1,
+      value: m,
+    };
+
+    this.marks.push(mark);
+
+    return mark;
   },
 
   // Додати метод removeMark (прибирає оцінку за id), має повертати оновлений масив
   // user.removeMark(1)
+
+  removeMark: function (id) {
+    this.marks = this.marks.filter((mark) => mark.id !== id);
+  },
 
   setName: function (name) {
     this.name = name;
@@ -170,3 +181,11 @@ const student = {
 };
 
 console.log(student.setAge(26));
+
+const userMark = student.addMark(4);
+
+console.log(student);
+
+student.removeMark(userMark.id);
+
+console.log(student);
