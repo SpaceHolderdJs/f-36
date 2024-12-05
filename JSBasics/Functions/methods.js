@@ -110,7 +110,7 @@ Boolean;
 
 // new
 
-function User(name, age) {
+function User({ name, age }) {
   this.name = name;
   this.age = age;
   this.skills = [];
@@ -124,7 +124,7 @@ function User(name, age) {
   };
 }
 
-const userFromConstructor = new User("Igor", 25);
+const userFromConstructor = new User({ name: "Igor", age: 12 });
 
 userFromConstructor.showInfo();
 userFromConstructor.birthday();
@@ -152,7 +152,9 @@ console.log(new String("Hello"), new Number(5));
 function Post(title, text, author, date) {
   this.title = title;
   this.text = text;
-  this.author = author;
+
+  this.author = new User(author);
+
   this.date = date;
 
   this.delete = function () {
@@ -168,22 +170,31 @@ function Post(title, text, author, date) {
   this.setTitle = function (title) {
     this.title = title;
   };
+
+  this.getUser = function () {
+    console.log(this.author, "author");
+    return this.author;
+  };
 }
 
-const post = new Post("Title", "text", "Author", "12.12.12");
+const post = new Post("Title", "text", { name: "Igor", age: 100 }, "12.12.12");
 
-post.delete();
+post.getUser();
 
-post.edit({
-  title: "New title",
-  text: "New Text",
-  date: "11.11.11",
-  author: "AUTHOR",
-});
+post.author.showInfo();
 
-post.setTitle("TITLE");
+console.log(post, "post!!!");
 
-console.log(post);
+// post.delete();
+
+// post.edit({
+//   title: "New title",
+//   text: "New Text",
+//   date: "11.11.11",
+//   author: "AUTHOR",
+// });
+
+// post.setTitle("TITLE");
 
 // HW:
 
@@ -197,3 +208,18 @@ console.log(post);
 //  }
 
 // додати до посту метод getUser (повертає користувача - автора посту)
+
+// call, bind, apply -> this
+// function constructor User -> new User(...arguments)
+// function vs () => function is hoisted
+
+// function
+
+// OOP
+
+// Typescript
+
+// class
+
+// class = function
+// class - prototype
