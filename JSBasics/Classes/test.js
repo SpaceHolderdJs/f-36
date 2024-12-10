@@ -146,3 +146,41 @@ console.log(new PNumberExtended(500), new PNumberExtended(500).toString());
 // По 1 символу за раз!!!
 
 // Додати метод reverse () - перегортає строку
+
+class CustomString extends String {
+  constructor(value) {
+    super(value);
+  }
+
+  replace(valueToSearch, valueToChangeOn, isReplaceAll = false) {
+    let result = "";
+    let replaceCount = 0;
+    let iterations = 0;
+
+    for (const char of this) {
+      iterations++;
+      if (char === valueToSearch) {
+        result += valueToChangeOn;
+        replaceCount++;
+
+        if (!isReplaceAll) return result + this.slice(iterations);
+
+        continue;
+      }
+
+      result += char;
+    }
+
+    return { result, replaceCount };
+  }
+
+  reverse() {
+    return this.split("").reverse().join("");
+  }
+}
+
+const customStr = new CustomString("hello world");
+
+console.log(customStr.replace("l", "*"));
+console.log(customStr.replace("l", "*", true));
+console.log(customStr.reverse());
