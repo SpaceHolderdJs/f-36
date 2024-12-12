@@ -82,3 +82,64 @@ console.log(car2);
 // 3. sort() => cортує всі елементи строки за алфавітом
 
 // calledMethodsCount має рахувати кожен виклик з усіх цих методів
+
+class CustomString extends String {
+  #calledMethodsCount = 0;
+
+  constructor(value) {
+    super(value);
+  }
+
+  #detectMethodCall() {
+    this.#calledMethodsCount++;
+  }
+
+  divide() {
+    this.#detectMethodCall();
+
+    const middle = Math.floor(this.length / 2);
+
+    const part1 = this.slice(0, middle);
+    const part2 = this.slice(middle);
+
+    return [part1, part2];
+  }
+
+  analyze() {
+    this.#detectMethodCall();
+
+    const res = {};
+    for (const char of this) {
+      res[char] = res.hasOwnProperty(char) ? res[char] + 1 : 1;
+    }
+    return res;
+
+    // return this.split("").reduce((acc, el) => {
+    //   acc.hasOwnProperty(el) ? acc[el]++ : (acc[el] = 1);
+
+    //   return acc;
+    // }, {});
+  }
+
+  sort() {
+    this.#detectMethodCall();
+
+    return this.split("")
+      .sort((e1, e2) => e1.localeCompare(e2))
+      .join("");
+  }
+}
+
+const customString = new CustomString("JavaScript");
+
+const dividedCustomString = customString.divide();
+console.log(dividedCustomString);
+
+const analyzedString = customString.analyze();
+customString.analyze();
+console.log(analyzedString);
+
+const sortedString = customString.sort();
+console.log(sortedString);
+
+console.log(customString);
