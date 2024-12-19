@@ -97,6 +97,12 @@ class Visitor {
   }
 
   leave() {
+    const userCart = Shop.visitors.get(this);
+
+    if (userCart.length > 0) {
+      throw new Error("Please pay for items before leave");
+    }
+
     Shop.visitors.delete(this);
   }
 
@@ -115,6 +121,62 @@ class Visitor {
     this.budget = this.budget - shopItem.price;
 
     Shop.visitors.get(this).push(shopItem);
+
+    if (this.budget >= 0) {
+      const goodsBefore = Shop.visitors.get(this);
+
+      const goodsWithoutCurrent = goodsBefore.filter(
+        ({ title }) => title !== shopItem.title
+      );
+
+      Shop.visitors.set(this, goodsWithoutCurrent);
+    }
+  }
+
+  registerAdmin() {
+    return new ShopAdmin(this.name);
+  }
+}
+
+class ShopAdmin extends Visitor {
+  constructor(name) {
+    super(name, 0, 0);
+    this.isAdmin = true;
+
+    this.clearCart();
+  }
+
+  clearCart() {
+    const isAlreadyBuyingSomething = Shop.visitors.has(this);
+
+    if (isAlreadyBuyingSomething) {
+      Shop.visitors.set(this, []);
+    }
+  }
+
+  buy() {
+    throw new Error("Admin can not buy");
+  }
+
+  closeShop() {
+    const visitorsQuantity = [...Shop.visitors.keys()].filter(
+      (visitor) => !visitor.isAdmin
+    ).length;
+
+    const isAtLeastOneAdminThere = [...Shop.visitors.keys()].some(
+      (visitor) => visitor.isAdmin
+    );
+
+    if (!isAtLeastOneAdminThere) {
+      throw new Error("There is no admin in the shop");
+    }
+
+    if (visitorsQuantity === 0) {
+      Shop.visitors.clear();
+      console.log("The shop was closed");
+    } else {
+      throw new Error("There is a visitor");
+    }
   }
 }
 
@@ -134,6 +196,17 @@ const visitor2 = new Visitor("Alina", 2500, 15);
 
 visitor1.visit();
 visitor2.visit();
+
+const admin1 = visitor1.registerAdmin();
+
+admin1.visit();
+
+visitor1.leave();
+visitor2.leave();
+
+admin1.closeShop();
+
+console.log(admin1, "admin1");
 
 visitor1.buy(new ShopItem("Socks", 200));
 
