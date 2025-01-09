@@ -121,8 +121,56 @@ function user(elements, data) {
 }
 
 // Завдання:
-// posts = [{title: "", text: "", date: "2021-03-01", id: 1}];
+const postsInfo = [
+  { title: "P1", text: "T1", date: "2021-03-01", id: 1 },
+  { title: "P2", text: "T2", date: "2021-06-01", id: 2 },
+];
 // Створити post та posts компоненти (див user та users)
 // Відмалювати пости в HTML верстку
 // Додати кнопку до посту (його картки), яка виведе alert з назвою посту на клік
 // Стилізуйте пости css
+
+function posts(elements, data) {
+  const posts = data.posts;
+
+  if (elements.posts) {
+    posts.forEach((postData) => {
+      const postCard = document.createElement("div");
+      postCard.className = "post-card";
+      post({ card: postCard }, postData);
+      elements.posts.appendChild(postCard);
+    });
+  }
+}
+
+posts({ posts: document.getElementById("posts") }, { posts: postsInfo });
+
+function post(elements, data) {
+  const { title, text, date } = data;
+
+  if (elements.card) {
+    const h4 = document.createElement("h4");
+    h4.textContent = title;
+    elements.card.appendChild(h4);
+
+    const p = document.createElement("p");
+    p.textContent = text;
+    elements.card.appendChild(p);
+
+    const p1 = document.createElement("p");
+    p1.textContent = date;
+    elements.card.appendChild(p1);
+
+    const button = document.createElement("button");
+    button.textContent = "Show Info";
+    elements.card.appendChild(button);
+
+    button.onclick = () => alert(title);
+  }
+}
+
+// new HTMLElement("");
+// new HTMLParagraphElement();
+// new HTMLButtonElement();
+
+document.createElement("p");
