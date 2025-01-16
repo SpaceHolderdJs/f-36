@@ -167,15 +167,57 @@ class Componets {
         });
       }
 
+      // slides indicators
+      const slidesIndicatorsContainer = document.createElement("div");
+      slidesIndicatorsContainer.className = "slides-indicators-wrapper";
+
+      sliderElement.appendChild(slidesIndicatorsContainer);
+
+      const slidesIndicatorsUpdate = (nextSlide) => {
+        const allIndicators = document.querySelectorAll(".slides-indicator");
+
+        allIndicators.forEach((indicator) => {
+          indicator.classList.remove("active");
+        });
+
+        const newActiveSlideIndicator = allIndicators.item(nextSlide);
+        newActiveSlideIndicator.classList.add("active");
+      };
+
+      slides.forEach((s, i) => {
+        const indicator = document.createElement("div");
+        indicator.className = "slides-indicator";
+
+        if (i === slide) {
+          indicator.classList.add("active");
+        }
+
+        indicator.onclick = () => {
+          slide = i;
+          slidesContainer.style.transform = `translateX(-${slide * width}px)`;
+
+          slidesIndicatorsUpdate(slide);
+        };
+
+        slidesIndicatorsContainer.appendChild(indicator);
+      });
+
       const nextButton = document.createElement("button");
       nextButton.textContent = ">";
 
       nextButton.className = "next-button";
 
       nextButton.onclick = () => {
-        slide = slide + 1 > slides.length - 1 ? 0 : slide + 1;
+        if (slide + 1 > slides.length - 1) {
+          slidesContainer.classList.remove("transitioned");
+          slide = 0;
+        } else {
+          slidesContainer.classList.add("transitioned");
+          slide = slide + 1;
+        }
         console.log(slide, slide * width);
         slidesContainer.style.transform = `translateX(-${slide * width}px)`;
+        slidesIndicatorsUpdate(slide);
       };
       sliderElement.appendChild(nextButton);
 
@@ -185,9 +227,17 @@ class Componets {
       prevButton.className = "prev-button";
 
       prevButton.onclick = () => {
-        slide = slide - 1 < 0 ? slides.length - 1 : slide - 1;
+        if (slide - 1 < 0) {
+          slidesContainer.classList.remove("transitioned");
+          slide = slides.length - 1;
+        } else {
+          slidesContainer.classList.add("transitioned");
+          slide = slide - 1;
+        }
+
         console.log(slide, slide * width);
         slidesContainer.style.transform = `translateX(-${slide * width}px)`;
+        slidesIndicatorsUpdate(slide);
       };
       sliderElement.appendChild(prevButton);
     };
