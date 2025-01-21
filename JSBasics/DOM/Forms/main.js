@@ -22,6 +22,36 @@ const generateUsersWithFaker = (quantity = 10) => {
 const users = generateUsersWithFaker(20);
 console.log(users);
 
+let isSorted = false;
+
+const createUser = (user) => {
+  users.push(user);
+};
+
+// Create user form
+
+const createUserForm = document.forms["create-user-form"];
+
+createUserForm.onsubmit = (event) => {
+  event.preventDefault();
+
+  const { name, avatar, username, city, email } = createUserForm.elements;
+
+  const newUser = {
+    id: faker.datatype.uuid(),
+    name: name.value,
+    username: username.value,
+    city: city.value,
+    avatar: avatar.value,
+    email: email.value,
+  };
+
+  createUser(newUser);
+  Componets.user.list(document.body).render(users);
+
+  console.log(newUser, "newUser");
+};
+
 class Componets {
   static user = {
     card: (parent) => {
@@ -29,7 +59,7 @@ class Componets {
         const { name, email, avatar } = user;
 
         parent.innerHTML += `
-          <div class="container py-5">
+          <div class="container py-2">
             <div class="row justify-content-center">
               <div class="col-md-6">
                 <div class="card shadow-sm">
@@ -38,13 +68,14 @@ class Componets {
                       <img
                         src="${avatar}"
                         class="rounded-circle shadow-sm"
+                        style="width: 80px; height: 80px; object-fit: "cover";"
                         alt="User Avatar"
                       />
                     </div>
                     <h5 class="card-title mb-1">${name}</h5>
                     <p class="text-muted mb-3">${email}</p>
                     <div class="d-grid">
-                      <button class="btn btn-primary">Edit Profile</button>
+                      <button class="btn btn-danger">Delete Profile</button>
                     </div>
                   </div>
                 </div>
@@ -59,9 +90,24 @@ class Componets {
 
     list: (parent) => {
       const inputElement = document.querySelector("#search-users-input");
+      const sortButton = document.querySelector("#sort-users-button");
 
       const search = (users, search) => {
-        return users.filter((user) => user.name.includes(search));
+        return users.filter(({ name, email, username }) =>
+          [name, email, username]
+            .map((criteria) => criteria.toLowerCase())
+            .some((criteria) => criteria.includes(search.toLowerCase()))
+        );
+      };
+
+      const sort = (users) => {
+        const sortedUsers = users.toSorted((u1, u2) =>
+          !isSorted
+            ? u1.name.localeCompare(u2.name)
+            : u2.name.localeCompare(u1.name)
+        );
+
+        return sortedUsers;
       };
 
       const render = (usersToRender) => {
@@ -74,9 +120,15 @@ class Componets {
       };
 
       inputElement.oninput = (event) => {
-        console.log(event.target.value);
         const usersResult = search(users, event.target.value);
         Componets.user.list(document.body).render(usersResult);
+      };
+
+      sortButton.onclick = () => {
+        isSorted = !isSorted;
+        console.log(isSorted, "isSorted");
+        const sortedUsersResult = sort(users);
+        Componets.user.list(document.body).render(sortedUsersResult);
       };
 
       return { render };
@@ -84,19 +136,23 @@ class Componets {
   };
 }
 
-// Componets.user.card(document.body).render(users[0]);
 Componets.user.list(document.body).render(users);
 
 // H/W
+// Завдання
+// написати логіку видалення користувача (кожна картка має свою кнопку видалення)
+// На клік на кнопку користувач має видалятися (deleteUser - створити функцію)
 
-// У list:
+//  Переписати метод render компонента user
+//  - Створити кнопку виключно за допомогою document.createElement
+//  - Запрограмувати кнопку на видалення
+//  - Додати кнопку у верстку кожної картки
+//  - Видаляти користувача за id
+//  - Перемальовувати компонент (render)
+//  Componets.user.card(usersWrapper).render(user);
 
-// 1. Додати до пошуку відсутність залежності від регістру
+// Додати стандартну картинку для користувача (поки faker не працює)
 
-// 2. Додати до специфіки пошуку поля email, username
-// АБО name, АБО email, AБО username
-
-// 3. Дописати механіку sort користувачів за алфавітом (ростання) (name)
-// - створити функцію sort
-// - використати render() для перемальовки
-// - sort може працювати за кнопкою
+// За бажанням офрмити вивід карток (по 2-3 у лінію)
+// main.css
+// lit-html - розширення для роботи з HTML у JS
