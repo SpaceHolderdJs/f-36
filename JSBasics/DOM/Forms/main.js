@@ -11,6 +11,7 @@ const generateUsersWithFaker = (quantity = 10) => {
       email: faker.internet.email(),
       username: faker.internet.userName(),
       avatar: faker.internet.avatar(),
+      color: faker.commerce.color(),
     };
 
     users.push(user);
@@ -30,39 +31,113 @@ const createUser = (user) => {
 
 // Create user form
 
-const createUserForm = document.forms["create-user-form"];
+// const createUserForm = document.forms["create-user-form"];
 
-createUserForm.onsubmit = (event) => {
-  event.preventDefault();
+new FormConstructor(
+  "create-user-form",
+  [
+    {
+      name: "email",
+      type: "email",
+      placeholder: "Email",
+      class: "form-control m-3",
+    },
+    {
+      name: "name",
+      type: "text",
+      placeholder: "Name",
+      class: "form-control m-3",
+    },
+    {
+      name: "username",
+      type: "text",
+      placeholder: "User Name",
+      class: "form-control m-3",
+    },
+    {
+      name: "city",
+      type: "text",
+      placeholder: "User City",
+      class: "form-control m-3",
+    },
+    {
+      name: "avatar",
+      type: "text",
+      placeholder: "User Avatar",
+      class: "form-control m-3",
+    },
+    {
+      name: "color",
+      type: "color",
+      placeholder: "Check this box",
+      class: "m-3",
+    },
+    // [Note]: Todo
+    // {
+    //   name: "file",
+    //   type: "file",
+    //   placeholder: "Select the file",
+    //   class: "m-3",
+    // },
+  ],
+  {
+    class: "d-flex flex-column p-3 m-3",
+    submitBtnClass: "btn btn-primary m-3",
+    onSubmit: (event, formData) => {
+      const { name, avatar, username, city, email, color } = formData.data;
+      console.log(formData, "formData");
 
-  const { name, avatar, username, city, email } = createUserForm.elements;
+      const newUser = {
+        id: faker.datatype.uuid(),
+        name: name,
+        username: username,
+        city: city,
+        avatar: avatar,
+        email: email,
+        color: color,
+      };
 
-  const newUser = {
-    id: faker.datatype.uuid(),
-    name: name.value,
-    username: username.value,
-    city: city.value,
-    avatar: avatar.value,
-    email: email.value,
-  };
+      createUser(newUser);
+      Componets.user.list(document.body).render(users);
+    },
+    parent: document.querySelector(".users-form-wrapper"),
+  }
+);
 
-  createUser(newUser);
-  Componets.user.list(document.body).render(users);
+// createUserForm.onsubmit = (event) => {
+//   event.preventDefault();
 
-  console.log(newUser, "newUser");
-};
+//   const { name, avatar, username, city, email } = createUserForm.elements;
+
+//   const newUser = {
+//     id: faker.datatype.uuid(),
+//     name: name.value,
+//     username: username.value,
+//     city: city.value,
+//     avatar: avatar.value,
+//     email: email.value,
+//   };
+
+//   createUser(newUser);
+//   Componets.user.list(document.body).render(users);
+
+//   console.log(newUser, "newUser");
+// };
 
 class Componets {
   static user = {
     card: (parent) => {
       const render = (user) => {
-        const { name, email, avatar } = user;
+        const { name, email, avatar, color } = user;
+
+        // const card = document.createElement("div");
+        // card.style.background = color;
 
         parent.innerHTML += `
           <div class="container py-2">
             <div class="row justify-content-center">
               <div class="col-md-6">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm" style="background: linear-gradient(45deg, transparent, ${color} 10%, transparent 60%)">
                   <div class="card-body text-center">
                     <div class="mb-4">
                       <img

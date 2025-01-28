@@ -1,0 +1,30 @@
+.form-black {
+  background: black;
+  color: white;
+  border-radius: 20px;
+  padding: 10px;
+  display: grid;
+  gap: 10px;
+  max-width: 500px;
+}
+
+.form-textarea {
+  border: 1px solid aqua;
+}
+
+.btn {
+    border-radius: 20px;
+    background: grey;
+    outline: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn.btn-reset {
+    background: darkred;
+}
+
+.btn.btn-submit {
+    background: lightskyblue;
+}

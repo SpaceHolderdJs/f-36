@@ -23,7 +23,9 @@ class FormConstructor {
     const form = document.createElement("form");
     form.name = this.name;
 
-    this.options.class.split(" ").forEach((cls) => form.classList.add(cls));
+    if (this.options.class) {
+      this.options.class.split(" ").forEach((cls) => form.classList.add(cls));
+    }
 
     // [Note]: Creating form fields and connecting them
 
@@ -97,11 +99,17 @@ class FormField {
   constructor(fieldData) {
     this.fieldData = fieldData;
     this.element = this.init(fieldData);
-    // [Note]: Now returns {input, label} or input
   }
 
   init(fieldData) {
-    const { type, name, id, element, class: className } = fieldData;
+    const {
+      type,
+      name,
+      id,
+      element,
+      class: className,
+      placeholder = "",
+    } = fieldData;
 
     switch (element) {
       case "textarea": {
@@ -117,6 +125,10 @@ class FormField {
 
         if (className) {
           className.split(" ").forEach((cls) => textarea.classList.add(cls));
+        }
+
+        if (placeholder) {
+          textarea.placeholder = placeholder;
         }
 
         return textarea;
@@ -149,6 +161,10 @@ class FormField {
           className.split(" ").forEach((cls) => select.classList.add(cls));
         }
 
+        if (placeholder) {
+          select.placeholder = placeholder;
+        }
+
         return select;
       }
 
@@ -169,6 +185,20 @@ class FormField {
           className.split(" ").forEach((cls) => input.classList.add(cls));
         }
 
+        if (placeholder) {
+          input.placeholder = placeholder;
+        }
+
+        const inputsTypesWithLabels = ["checkbox", "radio", "file", "color"];
+
+        if (inputsTypesWithLabels.includes(type)) {
+          const label = document.createElement("label");
+          label.appendChild(input);
+          label.innerHTML += ` ${placeholder || name}`;
+
+          return { label, input };
+        }
+
         return input;
       }
     }
@@ -177,7 +207,7 @@ class FormField {
 
 // [Note]: FormData class (for the data of the form)
 class FormCustomData {
-  constructor(data) {
+  constructor(data, validators = null) {
     this.data = data;
   }
 
@@ -203,60 +233,29 @@ class FormCustomData {
       this.data[field] = undefined;
     }
   }
+
+  validate() {
+    // H/W
+    // Пройти циклом for-in по validators (за наявності)
+    // Викликати всі перевірки для полів (key)
+    // У випадку, якщо дані не пройшли перевірку (false)
+    // Повертати fasle (кидати помилку)
+    // Повертати true (якщо всі перевірки успішні)
+  }
 }
 
-// const form1 = new FormConstructor(
-//   "Login",
-//   [
-//     { name: "email", type: "email", id: "email", value: "email@gmail.com" },
-//     { name: "password", type: "password" },
-//     {
-//       element: "select",
-//       type: "text",
-//       name: "role",
-//       id: "role",
-//       options: ["Developer", "CEO", "PM"],
-//     },
-//     {
-//       element: "textarea",
-//       type: "text",
-//       name: "description",
-//       class: "form-textarea",
-//     },
-//   ],
-//   {
-//     onSubmit: (event, data) => {
-//       console.log("Submit", event, data);
-//     },
-//     onReset: (event) => {
-//       console.log("Reset", event);
-//     },
-//     submitBtnClass: "btn btn-submit",
-//     resetBtnClass: "btn btn-reset",
-//     parent: document.body,
-//     class: "form-black",
-//   }
-// );
-
-// console.log(form1);
-
-// // Завдання:
-// // 1. Додати кнопку reset до форми
-// // 2. Додати класи до форми та всіх видів полей (field)
-
-// new FormConstructor(
-//   "Form 2",
-//   [
-//     { name: "search", type: "text", id: "search", value: "search" },
-//     { name: "agree", type: "checkbox", id: "agree" },
-//     { name: "file", type: "file" },
-//     { name: "color", type: "color" },
-//     // { name: "submit", type: "submit" },
-//   ],
-//   {
-//     onSubmit: (event, data) => {
-//       console.log("Search", data);
-//     },
-//     parent: document.body,
-//   }
-// );
+// Skip validation
+new FormCustomData({ email: "", password: "" }, null);
+new FormCustomData(
+  { email: "", password: "" },
+  {
+    email: (value, error) => {
+      return value.includes("@") && value.includes(".") && value.length > 5
+        ? true
+        : false;
+    },
+    password: (value, error) => {
+      return value.length > 6;
+    },
+  }
+).validate();
