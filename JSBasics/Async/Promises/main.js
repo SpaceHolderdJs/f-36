@@ -160,3 +160,52 @@ Promise.allSettled([
   pr3,
   new Promise((res, rej) => rej("Rejected from allSttled")),
 ]).then((res) => console.log(res, "allSettled Result"));
+
+// 1. Race statics
+Promise.all(racesPromises).then((results) => {
+  console.log(results, "results!!!");
+
+  const sortedRacers = results.toSorted(
+    (c1, c2) => c1.aproximateRaceTime - c2.aproximateRaceTime
+  );
+
+  console.log(sortedRacers, "sortedRacers");
+  console.table(sortedRacers);
+});
+
+class SportCar extends Car {
+  constructor(name, speed, color, plate) {
+    super(name, speed, color, plate);
+  }
+
+  race() {
+    const aproximateRaceTime =
+      500 + Math.floor(Math.random() * 5000) - this.speed;
+
+    this.aproximateRaceTime = aproximateRaceTime - aproximateRaceTime * 0.2;
+
+    return new Promise((res) => {
+      setTimeout(() => res(this), this.aproximateRaceTime);
+    });
+  }
+}
+
+const sportCars = [
+  new SportCar("Sport car 1", 300, "black", "xxxxxxxxx"),
+  new SportCar("Sport car 2", 310, "blue", "xxxxxxxxx"),
+  new SportCar("Sport car 3", 400, "green", "xxxxxxxxx"),
+];
+
+const sportCarsRacePromises = sportCars.map((car) => car.race());
+
+// race
+Promise.race(sportCarsRacePromises).then((winner) => {
+  console.log(winner, "sport winner");
+  SportCar.win(winner);
+});
+
+// all
+
+Promise.all(sportCarsRacePromises).then((results) => {
+  console.table(results, "results (sport)");
+});
