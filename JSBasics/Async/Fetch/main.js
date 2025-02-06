@@ -37,15 +37,50 @@ class UsersAPI {
       return [];
     }
   };
+
+  static getPosts = async () => {
+    try {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/posts"
+      );
+      const posts = await response.json();
+
+      return posts;
+    } catch {
+      console.log(err);
+      return [];
+    }
+  };
 }
 
 UsersAPI.getUsers().then((users) => {
-  console.log(users, "users from UsersAPI");
   // H/W!
 
-  //   users.forEach(
-  //     (user) => (document.body.innerHTML += `<h1>${user.email}</h1>`)
-  //   );
+  users.forEach(
+    (user) =>
+      (document.body.innerHTML += `<div class="card w-75 mb-3">
+        <div class="card-body">
+            <h5 class="card-title">${user.name}</h5>
+            <p class="card-text">
+                ${user.email}
+            </p>
+        </div>
+    </div>;`)
+  );
+});
+
+UsersAPI.getPosts().then((posts) => {
+  posts.forEach(
+    (post) =>
+      (document.body.innerHTML += `<div class="card w-75 mb-3">
+        <div class="card-body">
+            <h5 class="card-title">${post.title}</h5>
+            <p class="card-text">
+                ${post.body}
+            </p>
+        </div>
+    </div>;`)
+  );
 });
 
 // Завдання:
