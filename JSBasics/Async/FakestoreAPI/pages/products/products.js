@@ -2,10 +2,12 @@
 const header = document.querySelector("#header");
 const categoriesWrapper = document.querySelector("#categories");
 const productsWrapper = document.querySelector("#products");
+const productsSortingSelect = document.querySelector("#products-sorting");
 
 const nav = new HeaderComponent({}, header);
 nav.render();
 
+// Utils
 const renderProducts = (products) => {
   productsWrapper.innerHTML = "";
 
@@ -14,29 +16,52 @@ const renderProducts = (products) => {
   );
 };
 
+const removeActiveCategory = () => {
+  const allCategoryItems = [...document.querySelectorAll(".category-item")];
+
+  allCategoryItems.forEach((item) => item.classList.remove("text-bg-success"));
+
+  return allCategoryItems;
+};
+
+productsSortingSelect.onchange = async (event) => {
+  const products = await FakeStoreAPI.getAllProducts(event.target.value);
+  renderProducts(products);
+
+  // Updating the category elements (state)
+  const categoryElements = removeActiveCategory();
+  const allCategoryElement = categoryElements.find(
+    (element) => element.textContent === "all"
+  );
+  allCategoryElement.classList.add("text-bg-success");
+};
+
 FakeStoreAPI.getProductCategories().then((categories) => {
   //H/W
-  categories.push("all");
+  categories.unshift("all");
 
   categories.forEach((category) => {
     const categoryElement = document.createElement("button");
-    categoryElement.className = "btn badge text-bg-primary";
+    categoryElement.className = "category-item btn badge text-bg-primary";
+
+    if (category === "all") {
+      categoryElement.classList.add("text-bg-success");
+    }
+
     categoryElement.textContent = category;
     categoriesWrapper.appendChild(categoryElement);
 
-    // H/W
-    // Додати логіку для категорії "all"
-    // Виводити всі товари, якщо ви обрали цю категорію
-    // FakeStoreAPI.getProducstByCategory - товари за категорією
-    // FakeStoreAPI.getAllProducts() - всі товари
-    // Якщо категорія "all" - зробити запит на всі товари
-    // Якщо категорія інша - продовжувати робити запит за категорією (уже є)
-
-    // Підсвітити активну категорію кольором (bootstrap)
-
     categoryElement.onclick = async () => {
-      const products = await FakeStoreAPI.getProducstByCategory(category);
+      const products =
+        category === "all"
+          ? await FakeStoreAPI.getAllProducts()
+          : await FakeStoreAPI.getProductsByCategory(category);
+
       renderProducts(products);
+
+      removeActiveCategory();
+
+      categoryElement.classList.add("text-bg-success");
     };
   });
 });

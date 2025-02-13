@@ -25,7 +25,8 @@ class ProductCardComponent extends Component {
         <p class="card-text">${this.data.description}</p>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item">${this.data.price}</li>
+        <li class="list-group-item">${this.data.price}$</li>
+        <li class="list-group-item">${this.data.rating.rate}</li>
         <li class="list-group-item">${this.data.category}</li>
       </ul>
     </div>`;
