@@ -28,15 +28,17 @@ new FormConstructor(
         password: "83r5^_",
       };
 
-      // H/W
-      // Використати метод login з файлу api.js (FakeStoreAPI.login)
-      // Для відправки запиту на авторизацію, використовуючи дані (loginCorrectData)
-      // У випадку вдалої авторизації - перенаправити користувача на сторінку продуктів (умова)
-      // У випадку провальної авторизації - вивести alert про помилку і нікуди не переходити
+      try {
+        const loginPayload = await FakeStoreAPI.login(loginCorrectData);
 
-      // Умова для переходу (успішна)
-      if (false) {
-        window.location.href = "../products/products.html";
+        console.log(loginPayload, "!!!!");
+
+        // if (loginPayload.token) {
+        //   window.location.href = "../products/products.html";
+        // }
+      } catch (err) {
+        alert("Error: Credentials are wrong");
+        console.log(err);
       }
     },
     parent: formWrapper,

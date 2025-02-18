@@ -1,4 +1,8 @@
 class FakeStoreAPI {
+  static headers = {
+    "content-type": "application/json",
+  };
+
   static getAllProducts = async (sort = "") => {
     const response = await fetch(
       `https://fakestoreapi.com/products?sort=${sort}`,
@@ -37,10 +41,21 @@ class FakeStoreAPI {
     const response = await fetch("https://fakestoreapi.com/auth/login", {
       method: "POST",
       body: JSON.stringify(loginData),
+      headers: FakeStoreAPI.headers,
     });
 
     const payload = await response.json();
 
     return payload;
+  };
+
+  static getCartForUser = async (userId) => {
+    const response = await fetch(
+      `https://fakestoreapi.com/carts/user/${userId}`
+    );
+
+    const carts = await response.json();
+
+    return carts[0];
   };
 }

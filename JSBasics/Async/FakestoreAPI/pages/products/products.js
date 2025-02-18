@@ -7,6 +7,9 @@ const productsSortingSelect = document.querySelector("#products-sorting");
 const nav = new HeaderComponent({}, header);
 nav.render();
 
+const cart = new CartComponent({}, header);
+cart.render();
+
 // Utils
 const renderProducts = (products) => {
   productsWrapper.innerHTML = "";
