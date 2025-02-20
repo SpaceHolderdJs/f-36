@@ -5,7 +5,9 @@ class CartComponent extends Component {
 
   async prepareCartItemsLayout() {
     // TODO: Add here a logic to detect a user
-    const cart = await FakeStoreAPI.getCartForUser(2);
+    const userID = localStorage.getItem("userID");
+
+    const cart = await FakeStoreAPI.getCartForUser(userID);
     const products = await FakeStoreAPI.getAllProducts();
 
     let layout = "";
