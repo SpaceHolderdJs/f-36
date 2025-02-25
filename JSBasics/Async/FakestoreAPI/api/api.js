@@ -1,52 +1,26 @@
 class FakeStoreAPI {
-  static headers = {
-    "content-type": "application/json",
-  };
+  static instance = axios.create({ baseURL: "https://fakestoreapi.com" });
 
   static getAllProducts = async (sort = "") => {
-    const response = await fetch(
-      `https://fakestoreapi.com/products?sort=${sort}`,
-      {
-        method: "GET",
-      }
-    );
-
-    const products = await response.json();
-
-    return products;
+    const { data } = await FakeStoreAPI.instance.get(`/products?sort=${sort}`);
+    return data;
   };
 
   static getProductCategories = async () => {
-    const response = await fetch(
-      "https://fakestoreapi.com/products/categories",
-      { method: "GET" }
-    );
-
-    const categories = await response.json();
-
-    return categories;
+    const { data } = await FakeStoreAPI.instance.get("/products/categories");
+    return data;
   };
 
   static getProductsByCategory = async (category) => {
-    const response = await fetch(
-      `https://fakestoreapi.com/products/category/${category}`
+    const { data } = await FakeStoreAPI.instance.get(
+      `products/category/${category}`
     );
-
-    const products = await response.json();
-
-    return products;
+    return data;
   };
 
   static login = async (loginData) => {
-    const response = await fetch("https://fakestoreapi.com/auth/login", {
-      method: "POST",
-      body: JSON.stringify(loginData),
-      headers: FakeStoreAPI.headers,
-    });
-
-    const payload = await response.json();
-
-    return payload;
+    const { data } = await FakeStoreAPI.instance.post("/auth/login", loginData);
+    return data;
   };
 
   static getCartForUser = async (userId) => {
@@ -59,3 +33,19 @@ class FakeStoreAPI {
     return carts[0];
   };
 }
+
+FakeStoreAPI.instance.interceptors.request.use(
+  (requestConfig) => {
+    // H/W:
+    // 1. Отримати токен (token) з localStorage
+    // 2. Передати токен у headers за ключем Authorization
+    // 3. Завершити запит
+    // 4. Протестувати запити (GET, POST) на наявність у headers поля Authorization (має бути токен)
+    // 5. Переписати метод getCartForUser на axios
+    return requestConfig;
+  },
+  (err) => {
+    console.log(err);
+    return err;
+  }
+);

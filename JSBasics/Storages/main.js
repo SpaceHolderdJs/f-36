@@ -117,4 +117,7 @@ fetch("https://fakestoreapi.com/auth/login", {
 console.log();
 
 // H/W
-// 1.
+// 1. https://fakestoreapi.com/users - отримати всіх users (GET)
+// 2. Записати інформацію про користувачів (кожного у Local Storage)
+// key - id
+// 3. Записати у SessionStorage тих користувачів, id яких перевищує 4
