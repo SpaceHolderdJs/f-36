@@ -34,6 +34,10 @@ new FormConstructor(
         const { token } = loginPayload;
         localStorage.setItem("token", token);
 
+        // HW
+        // 1. Зберегти токен у cookie (використовуючи бібліотеку)
+        // 2. Встановити час існування cookie 2 дні
+
         const { sub: userID } = jwt_decode(token);
         localStorage.setItem("userID", userID);
 

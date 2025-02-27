@@ -24,11 +24,9 @@ class FakeStoreAPI {
   };
 
   static getCartForUser = async (userId) => {
-    const response = await fetch(
-      `https://fakestoreapi.com/carts/user/${userId}`
+    const { data: carts } = await FakeStoreAPI.instance.get(
+      `/carts/user/${userId}`
     );
-
-    const carts = await response.json();
 
     return carts[0];
   };
@@ -36,12 +34,15 @@ class FakeStoreAPI {
 
 FakeStoreAPI.instance.interceptors.request.use(
   (requestConfig) => {
-    // H/W:
-    // 1. Отримати токен (token) з localStorage
-    // 2. Передати токен у headers за ключем Authorization
-    // 3. Завершити запит
-    // 4. Протестувати запити (GET, POST) на наявність у headers поля Authorization (має бути токен)
-    // 5. Переписати метод getCartForUser на axios
+    const accessToken = localStorage.getItem("token");
+    requestConfig.headers["Authorization"] = `Bearer ${accessToken}`;
+    ("Set-Cookie");
+
+    // H/W
+    // Підключити бібліотеку https://www.jsdelivr.com/package/npm/js-cookie (login.html)
+    // Отримати токен з cookie використовуючи бібліотеку
+    // Записати токен у header Set-Cookie (key=value)
+
     return requestConfig;
   },
   (err) => {
