@@ -1,6 +1,33 @@
 // Elements
 const formWrapper = document.querySelector("#form-wrapper");
 
+// Observer
+const loginObserver = new Observer();
+console.log(loginObserver, "loginObserver");
+
+loginObserver.on("login:attempt", async (loginData) => {
+  try {
+    const loginPayload = await FakeStoreAPI.login(loginData);
+
+    const { token } = loginPayload;
+    localStorage.setItem("token", token);
+
+    const { sub: userID } = jwt_decode(token);
+    localStorage.setItem("userID", userID);
+
+    if (loginPayload.token) {
+      window.location.href = "../products/products.html";
+    }
+  } catch (err) {
+    loginObserver.emit("login:failed", err);
+  }
+});
+
+loginObserver.on("login:failed", (err) => {
+  alert("Error: Credentials are wrong");
+  console.warn(err);
+});
+
 new FormConstructor(
   "login-form",
   [
@@ -21,32 +48,15 @@ new FormConstructor(
     class: "d-flex flex-column p-3 m-3 d-flex flex-direction-column gap-3",
     submitBtnClass: "btn btn-primary",
     onSubmit: async (event, { data }) => {
-      console.log(data, "formData");
-
-      const loginCorrectData = {
-        username: "mor_2314",
-        password: "83r5^_",
-      };
+      // const loginCorrectData = {
+      //   username: "mor_2314",
+      //   password: "83r5^_",
+      // };
 
       try {
-        const loginPayload = await FakeStoreAPI.login(data);
-
-        const { token } = loginPayload;
-        localStorage.setItem("token", token);
-
-        // HW
-        // 1. Зберегти токен у cookie (використовуючи бібліотеку)
-        // 2. Встановити час існування cookie 2 дні
-
-        const { sub: userID } = jwt_decode(token);
-        localStorage.setItem("userID", userID);
-
-        if (loginPayload.token) {
-          window.location.href = "../products/products.html";
-        }
+        loginObserver.emit("login:attempt", data);
       } catch (err) {
-        alert("Error: Credentials are wrong");
-        console.log(err);
+        loginObserver.emit("login:failed", err);
       }
     },
     parent: formWrapper,
