@@ -2,8 +2,9 @@ import './style.css'
 import typescriptLogo from './typescript.svg'
 import viteLogo from '/vite.svg'
 import { setupCounter } from './counter.ts'
-import { sayHello } from './basics.ts'
+import { getAllUsers, sayHello } from './basics.ts'
 import { hw } from './hw.ts'
+import { advanced } from './advanced.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -27,3 +28,5 @@ setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
 
 sayHello();
 hw();
+getAllUsers();
+advanced();

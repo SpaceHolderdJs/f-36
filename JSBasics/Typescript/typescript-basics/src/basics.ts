@@ -162,3 +162,42 @@ export const sayHello = () => {
 // 3. Зробити запит на сервер
 // 4. Типізувати відповідь серверу вашим типом
 // 5. Вивести дані в консоль циклом for of
+
+type GeoType = {
+    lat: string;
+    lng: string;
+};
+
+type CompanyType = {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+};
+
+type AddressType = {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: GeoType;
+};
+
+type UserType = {
+    id: number;
+    name: string;
+    username: string;
+    email: string;
+    address: AddressType;
+    phone: string;
+    website: string;
+    company: CompanyType;
+};
+
+export const getAllUsers = async () => {
+    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+    const users: Array<UserType> = await response.json();
+
+    for (const user of users) {
+        console.log(user.name, user.address.city, user.company.name);
+    }
+};
