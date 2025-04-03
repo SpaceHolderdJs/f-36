@@ -1,6 +1,9 @@
 import { Counter } from "./components/Counter/Counter";
-import "./App.css";
 import { Score } from "./components/Score/Score";
+import { User } from "./components/User/User";
+import { UsersList } from "./components/UsersList/UsersList";
+
+import "./App.css";
 
 function App() {
  
@@ -10,6 +13,8 @@ function App() {
       <Counter />
       <Counter />
       <Score />
+      <User />
+      <UsersList />
     </div>
   );
 }
