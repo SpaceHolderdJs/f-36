@@ -1,0 +1,23 @@
+.users-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.create-user-form {
+    display: flex;
+    min-width: 500px;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.user-card {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 500px;
+    background: lightgray;
+    padding: 10px;
+}

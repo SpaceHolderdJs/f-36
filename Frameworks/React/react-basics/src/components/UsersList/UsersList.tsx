@@ -1,12 +1,23 @@
 import { useState } from "react";
 import { UsersListType } from "./users-list.types";
 import { UserType } from "../User/user.types";
+import "./UsersList.css";
 
 export const UsersList = () => {
   const [users, setUsers] = useState<UsersListType>([
     { name: "Igor", age: 25 },
     { name: "John", age: 23 },
   ]);
+
+  const [createUserData, setCreateUserData] = useState<UserType>({
+    name: "",
+    age: 0,
+  });
+
+  const createUser = (user: UserType) => {
+    setUsers([...users, user]);
+    setCreateUserData({ name: "", age: 0 });
+  };
 
   const deleteUser = (userName: string) => {
     const filteredUsers = users.filter((user) => user.name !== userName);
@@ -23,19 +34,34 @@ export const UsersList = () => {
   const updateBirthDate = (index: number, dateString: string) => {
     const yearOfBirth = +dateString.split("-")[0];
     const year = +new Date().getFullYear();
-    updateUser(index, {...users[index], age: year - yearOfBirth});
-  }
-
-  // 1. Створити у даному компоненті форму для створення користувача (name, age)
-  // Коли форма приймає дані і натискається кнопка Create - користувач має потрапити у список
-  // (дані форми можна очистити)
-
- // 2. Стилізувати список та форму за бажанням   
+    updateUser(index, { ...users[index], age: year - yearOfBirth });
+  };
 
   return (
-    <div>
+    <div className="users-list">
+      <div className="create-user-form">
+        <h3>Create user</h3>
+        <input
+          type="text"
+          placeholder="User name"
+          value={createUserData.name}
+          onChange={(e) =>
+            setCreateUserData({ ...createUserData, name: e.target.value })
+          }
+        />
+        <input
+          type="text"
+          placeholder="User age"
+          value={createUserData.age}
+          onChange={(e) =>
+            setCreateUserData({ ...createUserData, age: +e.target.value })
+          }
+        />
+        <button onClick={() => createUser(createUserData)}>Create user</button>
+      </div>
+
       {users.map((user, i) => (
-        <div key={`users-list:${user.name}:${i}`}>
+        <div className="user-card" key={`users-list:${user.name}:${i}`}>
           <p>{user.name}</p>
           <input
             autoFocus={true}
@@ -44,9 +70,11 @@ export const UsersList = () => {
             onChange={(e) => updateUser(i, { ...user, name: e.target.value })}
           />
           <p>{user.age}</p>
-          <input type="date" onChange={(e) => updateBirthDate(i, e.target.value) } />
+          <input
+            type="date"
+            onChange={(e) => updateBirthDate(i, e.target.value)}
+          />
           <button onClick={() => deleteUser(user.name)}>Delete</button>
-          <hr />
         </div>
       ))}
     </div>
