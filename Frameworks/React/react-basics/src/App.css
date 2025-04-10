@@ -1,0 +1,21 @@
+.indicate_button {
+    padding: 10px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    background-color: #28a745;
+    transition: background-color 0.3s ease;
+    margin: 20px auto;
+    display: block;
+}
+
+.indicate_button.active {
+    background-color: #ff0000;
+}
+
+.indicate_button:hover {
+    opacity: 0.9;
+}
