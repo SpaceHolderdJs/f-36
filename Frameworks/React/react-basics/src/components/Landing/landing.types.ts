@@ -42,5 +42,5 @@ export type LandingProductType = {
 //  Виводяться лише ті, що мають (includes) у назві (title/name) фрагмент
 // з пошукового input
 
-// ** можна створити окремий компонент Search (props)
+// **  можна створити окремий компонент Search (props)
 // *** users - filter, products - api query
