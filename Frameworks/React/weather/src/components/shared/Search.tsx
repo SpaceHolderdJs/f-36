@@ -1,20 +1,33 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { WeatherService } from "../../services/weather";
-import { OpenWeatherMapResponse } from "../../types/weather.types";
 
-type PropsType = {
-    setWeatherData: Dispatch<SetStateAction<OpenWeatherMapResponse | null>>
-}
+type PropsType<TDispatch> = {
+  requestType: "city" | "forecast";
+  setWeatherData:
+    | Dispatch<SetStateAction<TDispatch | null>>
+};
 
-export const Search: FC<PropsType> = ({ setWeatherData }) => {
-
+export const Search = <T,>({ setWeatherData, requestType }: PropsType<T>) => {
   const [value, setValue] = useState<string>("");
 
   const onSearch = async () => {
-    const weatherData = await WeatherService.searchByCity(value);
-    setWeatherData(weatherData);
-  }
+  
+    switch (requestType) {
+      case "forecast": {
+        const weatherData = await WeatherService.forecastByCity(value);
+        setWeatherData(weatherData as T);
+        break;
+      }
+
+      case "city":
+      default: {
+        const weatherData = await WeatherService.searchByCity(value);
+        setWeatherData(weatherData as T);
+        break;
+      }
+    }
+  };
 
   return (
     <div className="d-flex gap-1 w-100">

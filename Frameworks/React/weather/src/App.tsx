@@ -2,10 +2,19 @@ import { useState } from "react";
 import { Nav } from "react-bootstrap";
 import { WeatherSearch } from "./components/screens/WeatherSearch";
 import { WeatherForecast } from "./components/screens/WeatherForecast";
+import { WeatherHistory } from "./components/screens/WeatherHistory";
 import "./App.css";
 
+type TabsType = "search" | "forecast" | "history";
+
 export const App = () => {
-  const [tab, setTab] = useState<"search" | "forecast">("search");
+  const [tab, setTab] = useState<TabsType>("search");
+
+  const mappedTabs = {
+    search: <WeatherSearch />,
+    forecast: <WeatherForecast />,
+    history: <WeatherHistory />,
+  };
 
   return (
     <div className="d-flex flex-column align-items-center gap-5 p-5">
@@ -23,9 +32,15 @@ export const App = () => {
         >
           Forecast
         </Nav.Item>
+        <Nav.Item
+          className="btn btn-outline-warning m-1"
+          onClick={() => setTab("history")}
+        >
+          History
+        </Nav.Item>
       </Nav>
 
-      <div className="flex flex-column w-50">{tab === "search" ? <WeatherSearch /> : <WeatherForecast />}</div>
+      <div className="flex flex-column w-50">{mappedTabs[tab]}</div>
     </div>
   );
 };

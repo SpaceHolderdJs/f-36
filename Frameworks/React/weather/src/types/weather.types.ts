@@ -50,3 +50,13 @@ export type OpenWeatherMapResponse = {
     name: string;
     cod: number;
 };
+
+export type ForecastWeatherData = {
+    dt: number;
+    list: Array<OpenWeatherMapResponse>
+    pop: number;
+    sys: {
+        pod: string;
+    };
+    dt_txt: string;
+}

@@ -1,34 +1,147 @@
-import { FC } from "react"
-import { OpenWeatherMapResponse } from "../../types/weather.types"
-import { Card } from "react-bootstrap"
+import { FC } from "react";
+import { OpenWeatherMapResponse } from "../../types/weather.types";
+import { Card, Row, Col, Badge } from "react-bootstrap";
 
 type PropsType = {
-    weatherData: OpenWeatherMapResponse
-}
+  weatherData: OpenWeatherMapResponse;
+  unit?: "metric" | "imperial";
+};
 
-export const WeatherCard: FC<PropsType> = ({weatherData}) => {
-    const date = new Date()
-    const dateToDisplay = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+export const WeatherCard: FC<PropsType> = ({ 
+  weatherData, 
+  unit = "metric" 
+}) => {
+  // Date formatting
+  const date = new Date();
+  const options: Intl.DateTimeFormatOptions = { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  };
+  const formattedDate = date.toLocaleDateString(undefined, options);
+  
+  // Unit-dependent formatting
+  const tempUnit = unit === "metric" ? "°C" : "°F";
+  const speedUnit = unit === "metric" ? "m/s" : "mph";
+  
+  // Convert timestamp to readable time
+  const formatTime = (timestamp: number): string => {
+    const time = new Date(timestamp * 1000);
+    return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+  
+  // Format for humidity and cloud cover
+  const getHumidityDescription = (humidity: number): string => {
+    if (humidity < 30) return "Dry";
+    if (humidity < 60) return "Comfortable";
+    return "Humid";
+  };
+
+  // Get appropriate weather icon background color
+  const getWeatherColor = (main: string): string => {
+    const colors: Record<string, string> = {
+      Clear: "#FDB813",
+      Clouds: "#BCBEC0",
+      Rain: "#6698FF",
+      Snow: "#FFFAFA",
+      Thunderstorm: "#616669",
+      Drizzle: "#82CAFF",
+      Mist: "#C9C9C9",
+      Fog: "#969696",
+      Haze: "#C9BD8E",
+      Dust: "#C9BD8E",
+      Smoke: "#969696",
+      Tornado: "#616669"
+    };
+    return colors[main] || "#FFFFFF";
+  };
+
+  const cardHeaderBg = getWeatherColor(weatherData.weather[0].main);
 
   return (
-    <Card style={{ maxWidth: "300px" }}>
-        <Card.Body>
-            <Card.Img src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} />
-            <Card.Title>{weatherData.name}</Card.Title>
-            <Card.Title>{weatherData.main.temp}°C</Card.Title>
-            <Card.Text>{dateToDisplay}</Card.Text>
-            <Card.Text>Feels like: {weatherData.main.feels_like}°C</Card.Text>
-            <Card.Title>{weatherData.weather[0].main}</Card.Title>
-            <Card.Text>Pressure: {weatherData.main.pressure}</Card.Text>
-        </Card.Body>
+    <Card className="shadow-sm" style={{ margin: "auto", maxWidth: "400px", borderRadius: "12px", overflow: "hidden" }}>
+      <div style={{ 
+        backgroundColor: cardHeaderBg, 
+        padding: "20px", 
+        color: weatherData.weather[0].main === "Clear" ? "#333" : "#fff",
+        transition: "background-color 0.3s ease"
+      }}>
+        <Row className="align-items-center">
+          <Col xs={7}>
+            <h2 className="mb-0">{weatherData.name}</h2>
+            <small>{weatherData.sys.country}</small>
+            <h1 className="display-4 mt-3 mb-1">
+              {Math.round(weatherData.main.temp)}{tempUnit}
+            </h1>
+            <p className="mb-1">Feels like: {Math.round(weatherData.main.feels_like)}{tempUnit}</p>
+            <Badge bg="light" text="dark" className="mt-1">
+              {weatherData.weather[0].description}
+            </Badge>
+          </Col>
+          <Col xs={5} className="text-center">
+            <img 
+              src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} 
+              alt={weatherData.weather[0].description}
+              style={{ width: "100px", height: "100px" }}
+            />
+          </Col>
+        </Row>
+      </div>
+      
+      <Card.Body>
+        <p className="text-muted mb-3">{formattedDate}</p>
+        
+        <Row className="text-center mb-3 g-2">
+          <Col xs={4}>
+            <div className="p-2 border rounded">
+              <small className="d-block text-muted">Min</small>
+              <strong>{Math.round(weatherData.main.temp_min)}{tempUnit}</strong>
+            </div>
+          </Col>
+          <Col xs={4}>
+            <div className="p-2 border rounded">
+              <small className="d-block text-muted">Max</small>
+              <strong>{Math.round(weatherData.main.temp_max)}{tempUnit}</strong>
+            </div>
+          </Col>
+          <Col xs={4}>
+            <div className="p-2 border rounded">
+              <small className="d-block text-muted">Pressure</small>
+              <strong>{weatherData.main.pressure} hPa</strong>
+            </div>
+          </Col>
+        </Row>
+        
+        <hr className="my-3" />
+        
+        <Row className="g-2">
+          <Col xs={6}>
+            <small className="text-muted d-block">Humidity</small>
+            <p>{weatherData.main.humidity}% - {getHumidityDescription(weatherData.main.humidity)}</p>
+          </Col>
+          <Col xs={6}>
+            <small className="text-muted d-block">Visibility</small>
+            <p>{(weatherData.visibility / 1000).toFixed(1)} km</p>
+          </Col>
+          <Col xs={6}>
+            <small className="text-muted d-block">Wind</small>
+            <p>{weatherData.wind.speed} {speedUnit} {weatherData.wind.gust ? `(Gusts: ${weatherData.wind.gust} ${speedUnit})` : ''}</p>
+          </Col>
+          <Col xs={6}>
+            <small className="text-muted d-block">Cloudiness</small>
+            <p>{weatherData.clouds.all}%</p>
+          </Col>
+          <Col xs={6}>
+            <small className="text-muted d-block">Sunrise</small>
+            <p>{formatTime(weatherData.sys.sunrise)}</p>
+          </Col>
+          <Col xs={6}>
+            <small className="text-muted d-block">Sunset</small>
+            <p>{formatTime(weatherData.sys.sunset)}</p>
+          </Col>
+        </Row>
+      </Card.Body>
     </Card>
-  )
-}
-
-
-// Завдання:
-// 1. Вивести більше інформації в картку 
-// 2. Стилізувати картку під себе
-// 3. Записувати історію пошуку ваших міст у LocalStorage (localstorage.setItem("city", "weather object"))
-// Кожного разу на клік на кнопку Search треба Записати місто у LS разом з даними
-// Після запиту - затирати інпут з містом
+  );
+};

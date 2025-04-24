@@ -9,7 +9,7 @@ export const WeatherSearch = () => {
 
   return (
     <div className="d-flex flex-column align-items-center gap-5">
-        <Search setWeatherData={setWeatherData} />
+        <Search<OpenWeatherMapResponse> requestType="city" setWeatherData={setWeatherData} />
         {weatherData && <WeatherCard weatherData={weatherData} />}
     </div>
   )
