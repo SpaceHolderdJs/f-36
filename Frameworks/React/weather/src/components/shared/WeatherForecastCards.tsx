@@ -13,14 +13,14 @@ export const WeatherForecastCards: FC<PropsType> = ({ weatherData }) => {
 
   return (
     <div className="w-100 d-flex flex-direction-column align-items-center">
-      <Carousel className="w-100" style={{height: "650px"}}>
+      <Carousel className="w-100" style={{ height: "650px" }}>
         {data.map((hourlyForecastElements, index) => (
           <Carousel.Item
             key={`forecast-slider-${index}`}
             className="w-100 justify-content-center gap-5"
           >
             {hourlyForecastElements.slice(0, 1).map((forecast) => (
-            <div className="m-auto">
+              <div className="m-auto">
                 <WeatherCard weatherData={forecast} />
               </div>
             ))}

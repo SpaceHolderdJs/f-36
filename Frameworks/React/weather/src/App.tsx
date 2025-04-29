@@ -21,19 +21,25 @@ export const App = () => {
       <h1>Weather App</h1>
       <Nav variant="tabs" className="flex justify-content-center ">
         <Nav.Item
-          className="btn btn-outline-primary m-1"
+          className={`btn ${
+            tab === "search" ? "btn-primary" : "btn-outline-primary"
+          } m-1`}
           onClick={() => setTab("search")}
         >
           Search
         </Nav.Item>
         <Nav.Item
-          className="btn btn-outline-success m-1"
+          className={`btn  ${
+            tab === "forecast" ? "btn-success" : "btn-outline-success"
+          } m-1`}
           onClick={() => setTab("forecast")}
         >
           Forecast
         </Nav.Item>
         <Nav.Item
-          className="btn btn-outline-warning m-1"
+          className={`btn ${
+            tab === "history" ? "btn-warning" : "btn-outline-warning"
+          } m-1`}
           onClick={() => setTab("history")}
         >
           History

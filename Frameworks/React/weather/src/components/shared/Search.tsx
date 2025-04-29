@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { WeatherService } from "../../services/weather";
+import { removeHistoryDuplicates } from "../../utils/history";
 
 type PropsType<TDispatch> = {
   requestType: "city" | "forecast";
@@ -24,6 +25,18 @@ export const Search = <T,>({ setWeatherData, requestType }: PropsType<T>) => {
       default: {
         const weatherData = await WeatherService.searchByCity(value);
         setWeatherData(weatherData as T);
+
+        //[NOTE] History
+        const currentHistory = localStorage.getItem("history") || `[]`;
+        const parsedHistory = JSON.parse(currentHistory);
+
+        parsedHistory.push(weatherData);
+
+        const validatedHistory = removeHistoryDuplicates(parsedHistory);
+
+        const jsonHistory = JSON.stringify(validatedHistory);
+        localStorage.setItem("history", jsonHistory);
+
         break;
       }
     }
