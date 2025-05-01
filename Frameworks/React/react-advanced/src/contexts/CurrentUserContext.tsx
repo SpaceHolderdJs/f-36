@@ -12,21 +12,34 @@ export type UserType = {
   password: string;
 };
 
+export type UserSettingsType = {
+  email: string;
+  password: string;
+  status: string;
+  theme: "dark" | "light";
+};
+
 type CurrentUserContextType = {
   user: UserType | null;
   setUser?: Dispatch<SetStateAction<UserType | null>>;
-  possibleUsers: UserType[],
+
+  settings: UserSettingsType | null;
+  setSettings?: Dispatch<SetStateAction<UserSettingsType | null>>;
+
+  possibleUsers: UserType[];
 };
 
 export const CurrentUserContext = createContext<CurrentUserContextType>({
   user: null,
-  possibleUsers: []
+  settings: null,
+  possibleUsers: [],
 });
 
 export const CurrentUserContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
   const [user, setUser] = useState<UserType | null>(null);
+  const [settings, setSettings] = useState<UserSettingsType | null>(null);
 
   const possibleUsers: UserType[] = [
     { email: "email1@gmail.com", password: "password1" },
@@ -35,7 +48,9 @@ export const CurrentUserContextProvider: FC<PropsWithChildren> = ({
   ];
 
   return (
-    <CurrentUserContext.Provider value={{ user, setUser, possibleUsers }}>
+    <CurrentUserContext.Provider
+      value={{ user, setUser, settings, setSettings, possibleUsers }}
+    >
       {children}
     </CurrentUserContext.Provider>
   );
