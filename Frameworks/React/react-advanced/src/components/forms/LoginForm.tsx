@@ -39,7 +39,12 @@ export const LoginForm = () => {
         value={formData.password}
         onChange={(e) => updateFormData("password", e.target.value)}
       />
-      <button onClick={onSubmit}>Login</button>
+      <button
+        disabled={!formData.email || !formData.password}
+        onClick={onSubmit}
+      >
+        Login
+      </button>
     </div>
   );
 };

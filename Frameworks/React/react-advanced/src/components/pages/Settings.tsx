@@ -6,14 +6,17 @@ import {
 import { Link } from "react-router";
 
 export const Settings = () => {
-  const { user, setUser, settings, setSettings } =
+  const { user, setUser, settings, setSettings, changeTheme } =
     useContext(CurrentUserContext);
 
   const [formData, setFormData] = useState<UserSettingsType>({
     email: settings?.email || user?.email || "",
     password: settings?.password || user?.password || "",
     status: settings?.status || "",
-    theme: settings?.theme || "dark",
+    theme:
+      settings?.theme ||
+      (localStorage.getItem("theme") as "dark" | "light") ||
+      "dark",
   });
 
   const changeFormData = (key: keyof UserSettingsType, value: string) => {
@@ -24,13 +27,10 @@ export const Settings = () => {
     if (setSettings) {
       setSettings(formData);
 
-      document.body.classList.remove("light");
-      document.body.classList.remove("dark");
+      localStorage.setItem("theme", formData.theme);
 
-      if (formData.theme === "dark") {
-        document.body.classList.add("dark");
-      } else {
-        document.body.classList.add("light");
+      if (changeTheme) {
+        changeTheme(formData.theme);
       }
 
       if (setUser) {
@@ -59,12 +59,13 @@ export const Settings = () => {
         type="text"
         placeholder="Enter your status"
       />
-      <input
+      <select
         value={formData.theme}
         onChange={(e) => changeFormData("theme", e.target.value)}
-        type="text"
-        placeholder="Enter preferred theme"
-      />
+      >
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
       <label htmlFor="check">Check</label>
       <input id="check" type="checkbox" />
       <button onClick={onSubmit}>Save (Apply) settings</button>

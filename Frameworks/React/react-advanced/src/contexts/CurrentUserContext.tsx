@@ -4,6 +4,7 @@ import {
   FC,
   PropsWithChildren,
   SetStateAction,
+  useEffect,
   useState,
 } from "react";
 
@@ -26,6 +27,8 @@ type CurrentUserContextType = {
   settings: UserSettingsType | null;
   setSettings?: Dispatch<SetStateAction<UserSettingsType | null>>;
 
+  changeTheme?: (theme: string) => void;
+
   possibleUsers: UserType[];
 };
 
@@ -47,9 +50,35 @@ export const CurrentUserContextProvider: FC<PropsWithChildren> = ({
     { email: "email@gmail.com", password: "password3" },
   ];
 
+  const changeTheme = (theme: string) => {
+    document.body.classList.remove("light");
+    document.body.classList.remove("dark");
+
+    if (theme === "dark") {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.add("light");
+    }
+  };
+
+  useEffect(() => {
+    const lsTheme = localStorage.getItem("theme");
+
+    if (lsTheme) {
+      changeTheme(lsTheme);
+    }
+  }, []);
+
   return (
     <CurrentUserContext.Provider
-      value={{ user, setUser, settings, setSettings, possibleUsers }}
+      value={{
+        user,
+        setUser,
+        settings,
+        setSettings,
+        possibleUsers,
+        changeTheme,
+      }}
     >
       {children}
     </CurrentUserContext.Provider>

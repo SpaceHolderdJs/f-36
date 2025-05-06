@@ -1,17 +1,23 @@
 import { useContext } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export const Dashboard = () => {
   const { user, setUser } = useContext(CurrentUserContext);
 
- //Завдання:
-//  1. Додати до Dashboard кнопку Logout 
-// кнопка прибирає користувача (null) і перенаправляє на сторінку Login (useNavigate)
+  const navigate = useNavigate();
 
-// 2. Стилізувати (все)
+  const onLogout = () => {
+    if (setUser) {
+      setUser(null);
+      //localStorage.removeItem("access_token");
+      navigate("/login");
+    }
+  };
 
-// 3. Додати до Settings логіку запису у LocalStorage параметру theme
+  //Завдання:
+
+  // 3. Додати до Settings логіку запису у LocalStorage параметру theme
 
   return (
     <div>
@@ -20,6 +26,7 @@ export const Dashboard = () => {
       <h3>
         <Link to="/dashboard/settings">Settings</Link>
       </h3>
+      <button onClick={onLogout}>Logout</button>
     </div>
   );
 };
