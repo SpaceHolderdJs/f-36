@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 import "./App.css";
+import { useRequest } from "./hooks/useRequest";
 
 const obj = { value: 100 };
 
@@ -22,20 +24,65 @@ function App() {
 
   const sum = useMemo<number>(() => count1 + count2, [count1, count2]);
 
-
   // Завдання:
   // 1. Створити компонент Counter /components -> counter
   // 2. Підключити Counter до роутеру (routes.tsx)
   // 3. Використати useRef з типом <number> для реалізації лічильника
   // 4. Створити кнопки (+) (-) - які змінюють counter
   // 5. Вивести counter у JSX (верстку)
-  // 6. Оскільки counter не буде перемальовувати компонент - 
+  // 6. Оскільки counter не буде перемальовувати компонент -
   // сповіщати про зміну counter через alert
   // 7. alert(`Counter: ${counter}`); (useEffect)
 
+  const [lsName, setLsName, clearLsName] = useLocalStorage<string>("name");
+  const [lsUser, setLsUser, clearLsUser] = useLocalStorage<{ name: string }>(
+    "user",
+    true
+  );
+
+  const [posts, isLoading, error] = useRequest<
+    unknown,
+    { title: string; body: string }[]
+  >("https://jsonplaceholder.typicode.com/posts", {
+    method: "GET",
+  });
+
+  console.log(posts, "posts");
+
+
+  // Завдання:
+
+  // 1. Використати хук useLocalStorage у файлі Settings.tsx для параметру theme
+  // 2. Зробити запит (useRequest) у App.tsx (або ваш компонент) на посилання 
+  // https://jsonplaceholder.typicode.com/users
+  // відслідкувати error та loading
 
   return (
     <div>
+      <h1>Posts</h1>
+
+      {isLoading ? (
+        <h2>Loading...</h2>
+      ) : (
+        posts?.map(({ title, body }) => (
+          <div>
+            <h3>{title}</h3>
+            <h4>{body}</h4>
+          </div>
+        ))
+      )}
+
+      <h1>Name from LS: {lsName}</h1>
+      <input value={lsName || ""} onChange={(e) => setLsName(e.target.value)} />
+      <button onClick={clearLsName}>Clear name from LS</button>
+
+      <h1>User from LS: {lsUser?.name}</h1>
+      <input
+        value={lsUser?.name || ""}
+        onChange={(e) => setLsUser({ name: e.target.value })}
+      />
+      <button onClick={clearLsUser}>Clear user from LS</button>
+
       <h1>{sum}</h1>
       <h1>
         Count1: {count1}{" "}

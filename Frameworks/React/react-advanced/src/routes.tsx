@@ -5,11 +5,13 @@ import { Login } from "./components/pages/Login";
 import { Dashboard } from "./components/pages/Dashboard";
 import { Settings } from "./components/pages/Settings";
 import { PrivateRoute } from "./components/utils/PrivateRoute";
+import { Counter } from "./components/Counter";
 
 export const AppRoutes: FC = () => {
   return (
     <Routes>
       <Route index element={<App />} />
+      <Route path="/counter" element={<Counter />} />
       <Route path="/login" element={<Login />} />
       <Route
         path="/dashboard"
