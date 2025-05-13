@@ -19,7 +19,7 @@ export const useRequest = <RequestBody, ResponseBody>(
     const [error, setError] = useState<AxiosError | null>(null);
 
     useEffect(() => {
-        if (!data) {
+        if (!data && !error) {
             const { method, body, headers } = options;
 
             setLoading(true);
@@ -30,7 +30,7 @@ export const useRequest = <RequestBody, ResponseBody>(
                 .catch((err) => setError(err))
                 .finally(() => setLoading(false));
         }
-    }, [options, url]);
+    }, [data, error, options, url]);
 
     return [data, loading, error];
 };

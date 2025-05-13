@@ -24,16 +24,6 @@ function App() {
 
   const sum = useMemo<number>(() => count1 + count2, [count1, count2]);
 
-  // Завдання:
-  // 1. Створити компонент Counter /components -> counter
-  // 2. Підключити Counter до роутеру (routes.tsx)
-  // 3. Використати useRef з типом <number> для реалізації лічильника
-  // 4. Створити кнопки (+) (-) - які змінюють counter
-  // 5. Вивести counter у JSX (верстку)
-  // 6. Оскільки counter не буде перемальовувати компонент -
-  // сповіщати про зміну counter через alert
-  // 7. alert(`Counter: ${counter}`); (useEffect)
-
   const [lsName, setLsName, clearLsName] = useLocalStorage<string>("name");
   const [lsUser, setLsUser, clearLsUser] = useLocalStorage<{ name: string }>(
     "user",
@@ -49,11 +39,19 @@ function App() {
 
   console.log(posts, "posts");
 
+  const [users, isUsersLoading, usersError] = useRequest(
+    "https://jsonplaceholder.typicode.com/users",
+    {
+      method: "GET",
+    }
+  );
+
+  console.log(users, "users", isUsersLoading, usersError);
 
   // Завдання:
 
   // 1. Використати хук useLocalStorage у файлі Settings.tsx для параметру theme
-  // 2. Зробити запит (useRequest) у App.tsx (або ваш компонент) на посилання 
+  // 2. Зробити запит (useRequest) у App.tsx (або ваш компонент) на посилання
   // https://jsonplaceholder.typicode.com/users
   // відслідкувати error та loading
 

@@ -1,23 +1,30 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   CurrentUserContext,
   UserSettingsType,
 } from "../../contexts/CurrentUserContext";
 import { Link } from "react-router";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 export const Settings = () => {
   const { user, setUser, settings, setSettings, changeTheme } =
     useContext(CurrentUserContext);
 
+  const [lsTheme, changeLsTheme] = useLocalStorage<"dark" | "light">("theme");
+
   const [formData, setFormData] = useState<UserSettingsType>({
     email: settings?.email || user?.email || "",
     password: settings?.password || user?.password || "",
     status: settings?.status || "",
-    theme:
-      settings?.theme ||
-      (localStorage.getItem("theme") as "dark" | "light") ||
-      "dark",
+    theme: settings?.theme || lsTheme || "dark",
   });
+
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      theme: lsTheme || "dark",
+    }));
+  }, [lsTheme]);
 
   const changeFormData = (key: keyof UserSettingsType, value: string) => {
     setFormData({ ...formData, [key]: value });
@@ -27,7 +34,7 @@ export const Settings = () => {
     if (setSettings) {
       setSettings(formData);
 
-      localStorage.setItem("theme", formData.theme);
+      changeLsTheme(formData.theme);
 
       if (changeTheme) {
         changeTheme(formData.theme);
