@@ -1,15 +1,11 @@
-import { Login } from "./components/Login";
-import { useContext } from "react";
-import { AppContext } from "./contexts/AppContext";
+import { Link } from "react-router";
 import "./App.css";
 
 function App() {
-  const { data } = useContext(AppContext);
-  
   return (
     <div>
-      {data.user && <h1>Hello, {data.user.email}</h1>}
-      <Login />
+      <h1>Welcome</h1>
+      <Link to="/login">Login page</Link>
     </div>
   );
 }

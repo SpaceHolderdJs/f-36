@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
-import { AppContext, type UserType } from "../contexts/AppContext";
+import { ActionTypes, AppContext, type UserType } from "../contexts/AppContext";
+import { useNavigate } from "react-router";
 
 export const Login = () => {
   const { dispatch } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState<UserType>({
     email: "",
@@ -11,7 +13,8 @@ export const Login = () => {
 
   const onLogin = () => {
     if (dispatch) {
-      dispatch({ type: "USER_LOGIN", payload: formData });
+      dispatch({ type: ActionTypes.userLogin, payload: formData });
+      navigate("/info");
     }
   };
 
