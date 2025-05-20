@@ -7,6 +7,7 @@ import {
 } from "react";
 import type { UsersItemType } from "../types/users.types";
 import type { TodosItemType } from "../types/todos.types";
+import type { PostsItemType } from "../types/posts.types";
 
 export type UserType = {
   email: string;
@@ -17,6 +18,7 @@ export type DataType = {
   user: UserType | null;
   users: UsersItemType[];
   todos: TodosItemType[];
+  posts: PostsItemType[];
 };
 
 type AppContextType = {
@@ -35,10 +37,11 @@ export const enum ActionTypes {
   userLogout = "USER_LOGOUT",
   setUsers = "SET_USERS",
   setTodos = "SET_TODOS",
+  setPosts = "SET_POSTS",
 }
 
 export const AppContext = createContext<AppContextType>({
-  data: { user: null, users: [], todos: [] },
+  data: { user: null, users: [], todos: [], posts: [] },
 });
 
 const reducer = (data: DataType, action: ActionType) => {
@@ -67,13 +70,11 @@ const reducer = (data: DataType, action: ActionType) => {
       return { ...data, todos: typedAction.payload };
     }
 
-    // Завдання:
-    // 1. Реалізувати сторінку Posts (окремий файл у /components)
-    // 2. Вивести інформацію про пости (верстка)
-    // 3. Додати у api.ts файл метод getPosts https://jsonplaceholder.typicode.com/posts
-    // 4. Додати файл posts.types.ts у папку types
-    // 5. Додати у reducer (сюди) логіку під SET_POSTS
-    // 6. Підключити сторінку Posts до роутера (routes.tsx)
+    case ActionTypes.setPosts: {
+      const typedAction = action as ActionType<PostsItemType[]>;
+
+      return { ...data, posts: typedAction.payload };
+    }
 
     default: {
       return data;
@@ -86,6 +87,7 @@ export const AppContextProvider: FC<PropsWithChildren> = ({ children }) => {
     user: null,
     users: [],
     todos: [],
+    posts: []
   });
 
   return (

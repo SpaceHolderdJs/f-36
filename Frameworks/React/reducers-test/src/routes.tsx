@@ -5,8 +5,8 @@ import { Info } from "./components/Info";
 import { User } from "./components/User";
 import { Users } from "./components/Users";
 import { Todos } from "./components/Todos";
+import { Posts } from "./components/Posts";
 import App from "./App";
-
 
 export const AppRoutes: FC = () => {
   return (
@@ -18,6 +18,7 @@ export const AppRoutes: FC = () => {
         <Route path="/info/user" element={<User />} />
         <Route path="/info/users" element={<Users />} />
         <Route path="/info/todos" element={<Todos />} />
+        <Route path="/info/posts" element={<Posts />} />
       </Routes>
     </HashRouter>
   );
