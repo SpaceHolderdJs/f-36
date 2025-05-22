@@ -1,0 +1,9 @@
+.warning {
+  background: gold;
+  padding: 5px;
+}
+
+.success {
+  background: lightseagreen;
+  padding: 5px;
+}

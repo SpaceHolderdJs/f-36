@@ -1,8 +1,7 @@
-<h1>Hello, my name is {{ name }}</h1>
-
-<h2>Counter: {{ counter }}</h2>
-
-<button (click)="increaseCounter()">+</button>
-<button (click)="decreaseCounter()">-</button>
+<header>
+  <a routerLink="/counter" routerLinkActive="active">Counter</a>
+  <a routerLink="/status" routerLinkActive="active">Status</a>
+  <a routerLink="/users" routerLinkActive="active">Users</a>
+</header>
 
 <router-outlet />
