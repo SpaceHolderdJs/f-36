@@ -1,24 +1,14 @@
 import { Component } from '@angular/core';
-
-// mutable
+import { CounterService } from './counter.service';
 
 @Component({
   selector: 'app-counter',
   imports: [],
+  // Will use separate instance of CounterService for any of Counter component
+  providers: [CounterService],
   templateUrl: './counter.component.html',
   styleUrl: './counter.component.css',
 })
 export class CounterComponent {
-  counter: number = 0;
-
-  highCountValue: number = 10;
-  lowCountValue: number = -1;
-
-  increase() {
-    this.counter++;
-  }
-
-  decrease() {
-    this.counter--;
-  }
+  constructor(public counterService: CounterService) {}
 }

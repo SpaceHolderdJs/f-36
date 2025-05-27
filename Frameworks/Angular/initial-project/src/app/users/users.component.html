@@ -1,11 +1,12 @@
 <h1>Users</h1>
 
-@for (user of users; track user.email) {
-    <div>
-        <p>Email: {{ user.email }}</p>
-        <p>Name: {{ user.name }}</p>
-    </div>
-}
- @empty { 
-    <p>No users here :(</p>
+@for (user of usersService.users; track user.email) {
+<div class="card">
+    <p>Email: {{ user.email }}</p>
+    <p>Name: {{ user.name }}</p>
+    <p>Phone: {{ user.company.name }}</p>
+    <a [routerLink]="['/users', user.id]">View Page</a>
+</div>
+} @empty {
+<p>No users here :(</p>
 }

@@ -1,12 +1,12 @@
-<h1>Counter {{ counter }}</h1>
+<h1>Counter {{ counterService.counter }}</h1>
 
-<button (click)="increase()">Increase</button>
-<button (click)="decrease()">Decrease</button>
+<button (click)="counterService.increase()">Increase</button>
+<button (click)="counterService.decrease()">Decrease</button>
 
-@if (counter <= lowCountValue) {
+@if (counterService.counter <= counterService.lowCountValue) {
     <p class="warning">The counter is low (under -1)</p>
 }
 
-@if (counter >= highCountValue) {
+@if (counterService.counter >= counterService.highCountValue) {
     <p class="success">The counter is high (more than 10)</p>
 }
