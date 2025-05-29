@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UsersService } from './users.service';
 import { RouterLink } from '@angular/router';
 
@@ -8,8 +8,22 @@ import { RouterLink } from '@angular/router';
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
-export class UsersComponent {
-  constructor(public usersService: UsersService) {
+export class UsersComponent implements OnInit, OnDestroy {
+  constructor(public usersService: UsersService) {}
+
+  ngOnInit() {
     this.usersService.getUsers();
+  }
+
+  ngOnDestroy() {
+    if (this.usersService.users.length) {
+      this.usersService.saveUsersToLS(this.usersService.users);
+    }
+  }
+
+  onDelete(id: string) {
+    this.usersService
+      .deleteUserById(id)
+      .subscribe(() => alert(`The user with id: ${id} has been deleted`));
   }
 }

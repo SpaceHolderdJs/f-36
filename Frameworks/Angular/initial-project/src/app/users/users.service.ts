@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { UserType } from './users.types';
 
 @Injectable({
@@ -12,7 +12,33 @@ export class UsersService {
 
   constructor(private http: HttpClient) {}
 
+  saveUsersToLS(users: UserType[] = this.users) {
+    if (users?.length) {
+      const stringifiedUsers = JSON.stringify(users);
+      localStorage.setItem('users', stringifiedUsers);
+    }
+  }
+
+  getUsersFromLS(): UserType[] | null {
+    const lsUsers = localStorage.getItem('users');
+
+    if (lsUsers) {
+      const parsedUsers: UserType[] = JSON.parse(lsUsers);
+
+      return parsedUsers;
+    }
+
+    return null;
+  }
+
   getUsers() {
+    const potentialLSUsers = this.getUsersFromLS();
+
+    if (potentialLSUsers) {
+      this.users = potentialLSUsers;
+      return;
+    }
+
     this.http.get<UserType[]>(this.API_URL).subscribe((response) => {
       this.users = response;
     });
@@ -22,16 +48,7 @@ export class UsersService {
     return this.http.get<UserType>(`${this.API_URL}/${id}`);
   }
 
-
-  // Завдання:
-  // 1. Додати метод deleteUserById до UsersService
-  // ${this.API_URL}/${id} (delete) (запит на сервер)
-
-  // 2. Додати у картці користувача кнопку "Delete"
-  // 3. Підключити до кнопки запит з сервісу (див пункт 1)
-
-  // 4. На видалення користувача використати alert для повідомлення
-  // 5. Стилізувати сторінку користувача (user-details.css/html)
-
-  // 6. https://angular.dev/guide/routing/router-tutorial - почитати 
+  deleteUserById(id: string) {
+    return this.http.delete(`${this.API_URL}/${id}`);
+  }
 }

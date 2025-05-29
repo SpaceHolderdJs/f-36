@@ -6,6 +6,7 @@
     <p>Name: {{ user.name }}</p>
     <p>Phone: {{ user.company.name }}</p>
     <a [routerLink]="['/users', user.id]">View Page</a>
+    <button (click)="onDelete(user.id.toString())">Delete User</button>
 </div>
 } @empty {
 <p>No users here :(</p>

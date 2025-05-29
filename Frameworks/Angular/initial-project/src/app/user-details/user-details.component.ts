@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from '../users/users.service';
 import { UserType } from '../users/users.types';
 
@@ -9,14 +9,17 @@ import { UserType } from '../users/users.types';
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.css',
 })
-export class UserDetailsComponent {
+export class UserDetailsComponent implements OnInit {
   id: string | null = null;
   user: UserType | null = null;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private usersService: UsersService
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
 
     if (this.id) {
@@ -24,5 +27,10 @@ export class UserDetailsComponent {
         this.user = response;
       });
     }
+  }
+
+  back() {
+    this.router.navigate(['/users']);
+    // window.history.back();
   }
 }
