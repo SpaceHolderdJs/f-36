@@ -54,4 +54,4 @@ export class CounterComponent implements OnInit, DoCheck, OnChanges, OnDestroy {
 // У сервісі створити метод getPhotos (https://jsonplaceholder.typicode.com/photos)
 // Додати тип для фото
 // При виведенні фото на сторінку використати ngOnInit для їх отримання 
-// Сторінка має вивести фотографії 
+// Сторінка має вивести фотографії

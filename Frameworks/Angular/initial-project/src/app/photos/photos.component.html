@@ -1,0 +1,10 @@
+<h1>Photos</h1>
+
+@for(photo of photos.slice(0, 10); track photo.id) {
+    <div>
+        <h4>{{photo.title}}</h4>
+        <img [alt]="photo.title" [src]="photo.url" />
+    </div>
+} @empty {
+    <h2>No photos</h2>
+}
