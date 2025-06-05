@@ -1,1 +1,15 @@
-<p>user-dashboard works!</p>
+<div class="dashboard-header">
+  <h1>Dashboard</h1>
+
+  @if(authService.authUserData) {
+    <app-user-profile
+      [userData]="authService.authUserData"
+      viewVariant="limited"
+    />
+  }
+</div>
+
+
+@if(usersService.users) {
+  <app-users [usersData]="usersService.users" />
+}

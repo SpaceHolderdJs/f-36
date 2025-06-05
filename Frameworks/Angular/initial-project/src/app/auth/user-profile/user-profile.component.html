@@ -1,0 +1,22 @@
+@if(userData) { 
+    @if(viewVariant === "extended") {
+        <p>Email: {{ userData.email }}</p>
+        <p>
+            <img [src]="userData.image" alt="User" />
+            {{ userData.firstName }}
+            {{ userData.lastName }}
+        </p>
+        <p>Gender: {{ userData.gender }}</p>
+    } 
+
+    @if(viewVariant === "limited") {
+        <div class="limited-profile">
+            <img [src]="userData.image" alt="User" />
+            <div class="limited-profile-data">
+                <span><b>{{ userData.email }}</b></span>
+                <span><i>Last seen: {{ lastSeenDate }}</i></span>
+            </div>
+            
+        </div>
+    }
+}

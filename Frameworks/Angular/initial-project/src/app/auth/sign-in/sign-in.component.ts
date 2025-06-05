@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { SignInDataType } from '../auth.types';
+import { SignedUserDataType, SignInDataType } from '../auth.types';
 import { Router } from '@angular/router';
 
 @Component({
@@ -47,8 +47,9 @@ export class SignInComponent {
     this.authService
       .signIn(this.form.value as SignInDataType)
       .subscribe((response) => {
-        console.log(response, 'response');
+        this.authService.authUserData = response;
         this.router.navigate(['auth', 'user-dashboard']);
+        localStorage.setItem('lastSeen', new Date().toISOString());
       });
   }
 }
